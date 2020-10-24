@@ -15,29 +15,15 @@ const getDoodleDate = (doodle: GoogleDoodle) => {
 }
 
 const getDoodleType = (doodle: GoogleDoodle): DoodleType => {
-  /**
-   * all `video` doodles have nonempty `youtube_id`
-   */
   if (doodle.youtube_id !== '') {
     return 'video'
   }
 
-  /**
-   * all `slideshow` doodles have `doodle_type === 'slideshow'`
-   * also, all `slideshow` doodles have nonempty `standalone_html` that includes '/slideshow.html'
-   */
   if (doodle.doodle_type === 'slideshow') {
     return 'slideshow'
   }
 
-  /**
-   * all doodles with nonempty `standalone_html` that don't include '/slideshow.html' are `interactive` doodles
-   * extra `interactive` doodles are listed in `extraInteractiveDoodles`
-   */
-  if (
-    (doodle.standalone_html !== '' && !doodle.standalone_html.includes('/slideshow.html')) ||
-    extraInteractiveDoodles[doodle.name]
-  ) {
+  if (doodle.standalone_html !== '' || doodle.name in extraInteractiveDoodles) {
     return 'interactive'
   }
 

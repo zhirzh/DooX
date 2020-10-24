@@ -8,9 +8,8 @@ import { writeJson } from './utils'
 
 const workerCount = 5
 
-let shouldDownloadAll = false
-if (!existsSync(dumpDir)) {
-  shouldDownloadAll = true
+const shouldDownloadAll = !existsSync(dumpDir)
+if (shouldDownloadAll) {
   mkdirSync(dumpDir)
 }
 
@@ -38,11 +37,10 @@ const downloadMonthDoodles = async (dates: Date[]) => {
   const zeroMonth = month.toString().padStart(2, '0')
 
   const url = `https://www.google.com/doodles/json/${year}/${zeroMonth}?full=1`
-  const doodles = await fetch(url).then(res => res.json())
-
   const filename = `${year}-${zeroMonth}.json`
 
   console.log(filename)
+  const doodles = await fetch(url).then(res => res.json())
   writeJson(join(dumpDir, filename), doodles)
 
   await downloadMonthDoodles(dates)
