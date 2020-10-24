@@ -1,12 +1,52 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "jsx": "react-native",
-    "lib": ["dom", "esnext"],
-    "moduleResolution": "node",
     "noEmit": true,
-    "skipLibCheck": true,
+
+    // source config
+    "lib": ["dom", "esnext"],
+    "jsx": "react-native",
+
+    // module config
+    "moduleResolution": "node",
     "resolveJsonModule": true,
-    "strict": true
+    "esModuleInterop": true,
+    "isolatedModules": true,
+
+    // type system config
+    "strict": true,
+    /*
+      enable:
+        "alwaysStrict"
+        "noImplicitAny"
+        "noImplicitThis"
+        "strictBindCallApply"
+        "strictFunctionTypes"
+        "strictNullChecks"
+        "strictPropertyInitialization"
+    */
+
+    ////
+    "skipLibCheck": true,
+
+    ////
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noStrictGenericChecks": false,
+
+    ////
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+
+    ////
+    "suppressExcessPropertyErrors": false,
+    "suppressImplicitAnyIndexErrors": false,
+
+    // aliasing
+    "baseUrl": "./",
+    "paths": {
+      "~/*": ["./*"]
+    }
   }
 }

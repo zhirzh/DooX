@@ -5,22 +5,29 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "data": "yarn ts data/index.ts",
+    "ts": "node -r esm -r ts-node/register -r tsconfig-paths/register"
   },
   "dependencies": {
-    "expo": "~39.0.2",
-    "expo-status-bar": "~1.0.2",
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.4.tar.gz",
-    "react-native-web": "~0.13.12"
-  },
-  "devDependencies": {
     "@babel/core": "~7.9.0",
+    "@types/lodash-es": "^4.17.3",
+    "@types/node": "^14.14.2",
+    "@types/node-fetch": "^2.5.7",
     "@types/react": "~16.9.35",
     "@types/react-dom": "~16.9.8",
     "@types/react-native": "~0.63.2",
+    "date-fns": "^2.16.1",
+    "esm": "^3.2.25",
+    "expo": "~39.0.2",
+    "expo-status-bar": "~1.0.2",
+    "lodash-es": "^4.17.15",
+    "node-fetch": "^2.6.1",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.4.tar.gz",
+    "react-native-web": "~0.13.12",
+    "ts-node": "^9.0.0",
+    "tsconfig-paths": "^3.9.0",
     "typescript": "~3.9.5"
-  },
-  "private": true
+  }
 }
