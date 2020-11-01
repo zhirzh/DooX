@@ -2,6 +2,7 @@ import { gql } from 'apollo-server-express'
 import Fuse from 'fuse.js'
 import { map } from 'lodash-es'
 import { DoodleType, NormalizedDoodle } from '~/data/doodles'
+import { QuerySortOrder } from '~/server/types'
 import { countries, doodles as latestDoodles, tags, types } from '../data'
 
 const oldestDoodles = latestDoodles.slice().reverse()
@@ -24,7 +25,7 @@ const latestDoodlesFuse = new Fuse(latestDoodles, fuseOptions, fuseIndex)
 const oldestDoodlesFuse = new Fuse(oldestDoodles, fuseOptions, fuseIndex)
 
 export const queryTypeDef = gql`
-  enum QueryOrder {
+  enum QuerySortOrder {
     latest
     oldest
   }
@@ -33,7 +34,7 @@ export const queryTypeDef = gql`
     doodles(
       limit: Int
       offset: Int
-      order: QueryOrder
+      order: QuerySortOrder
 
       type: String
       countries: [String]
@@ -48,18 +49,13 @@ export const queryTypeDef = gql`
   }
 `
 
-enum QueryOrder {
-  latest = 'latest',
-  oldest = 'oldest',
-}
-
 export const queryResolver = {
   doodles: (
     _: unknown,
     params: {
       offset?: number
       limit?: number
-      order?: QueryOrder
+      order?: QuerySortOrder
 
       type?: DoodleType
       countries?: string[]
@@ -71,7 +67,7 @@ export const queryResolver = {
     const {
       offset = 0,
       limit = 1,
-      order = QueryOrder.latest,
+      order = QuerySortOrder.latest,
 
       type,
       countries = [],
@@ -80,10 +76,10 @@ export const queryResolver = {
       searchText,
     } = params
 
-    let results = order === QueryOrder.latest ? latestDoodles : oldestDoodles
+    let results = order === QuerySortOrder.latest ? latestDoodles : oldestDoodles
 
     if (searchText) {
-      const searchPool = order === QueryOrder.latest ? latestDoodlesFuse : oldestDoodlesFuse
+      const searchPool = order === QuerySortOrder.latest ? latestDoodlesFuse : oldestDoodlesFuse
       const matches = searchPool.search(searchText)
       results = map(matches, 'item')
     }
