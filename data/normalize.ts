@@ -1,30 +1,24 @@
 import { omit } from "lodash"
 import { dataFile, dumpFile } from "~/paths"
+import { GoogleDoodle } from "~/types/GoogleDoodle"
+import { NormalizedDoodle, OmitKey } from "~/types/NormalizedDoodle"
+import { readJson, writeJson } from "./utils"
 import {
   getDoodleDateString,
   getDoodleId,
   getDoodleType,
   getNormalizedDoodleUrls,
   getNormalizedGoogleUrl,
-} from "./doodle-utils"
-import { GoogleDoodle, NormalizedDoodle, NormalizedDoodleOmitKeyGoogleDoodle } from "./doodles"
-import { readJson, writeJson } from "./utils"
+} from "./utils.doodle"
 
-const omitKeys: NormalizedDoodleOmitKeyGoogleDoodle[] = [
-  "doodle_type",
-  "history_doodles",
-  "next_doodle",
-  "prev_doodle",
-  "related_doodles",
-  "run_date_array",
-]
+const omitKeys: OmitKey[] = ["doodle_type", "run_date_array"]
 
 export default () => {
   console.log("normalize")
 
   const googleDoodles = readJson<GoogleDoodle[]>(dumpFile)
 
-  const doodles: NormalizedDoodle[] = googleDoodles.map(doodle => {
+  const doodles = googleDoodles.map(googleDoodle => {
     const {
       name,
       standalone_html,
@@ -32,25 +26,27 @@ export default () => {
       prev_doodle,
       history_doodles,
       related_doodles,
-    } = doodle
+    } = googleDoodle
 
-    return {
-      ...omit(doodle, omitKeys),
+    const doodle: NormalizedDoodle = {
+      ...omit(googleDoodle, omitKeys),
 
-      gid: doodle.id,
-      id: getDoodleId(doodle),
-      date: getDoodleDateString(doodle),
-      type: getDoodleType(doodle, Object.keys(extraInteractiveDoodles)),
+      gid: googleDoodle.id,
+      id: getDoodleId(googleDoodle),
+      date: getDoodleDateString(googleDoodle),
+      type: getDoodleType(googleDoodle, Object.keys(extraInteractiveDoodles)),
 
-      ...getNormalizedDoodleUrls(doodle),
+      ...getNormalizedDoodleUrls(googleDoodle),
       standalone_html: getNormalizedGoogleUrl(extraInteractiveDoodles[name] || standalone_html),
 
-      nextDoodle: next_doodle && getDoodleId(next_doodle),
-      prevDoodle: prev_doodle && getDoodleId(prev_doodle),
+      next_doodle: next_doodle && getDoodleId(next_doodle),
+      prev_doodle: prev_doodle && getDoodleId(prev_doodle),
 
-      historyDoodles: history_doodles.map(getDoodleId),
-      relatedDoodles: related_doodles.map(getDoodleId),
+      history_doodles: history_doodles.map(getDoodleId),
+      related_doodles: related_doodles.map(getDoodleId),
     }
+
+    return doodle
   })
 
   writeJson(dataFile, doodles)

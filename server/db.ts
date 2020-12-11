@@ -1,7 +1,7 @@
 import { map } from "lodash"
-import { NormalizedDoodle } from "~/data/doodles"
 import { readJson } from "~/data/utils"
 import { dataFile } from "~/paths"
+import { NormalizedDoodle } from "~/types/NormalizedDoodle"
 import { normalizeStrings } from "./utils"
 
 export const doodles = readJson<NormalizedDoodle[]>(dataFile)

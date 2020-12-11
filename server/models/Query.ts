@@ -1,21 +1,17 @@
-import { gql } from "apollo-server-express"
+import { gql } from "apollo-server"
 import Fuse from "fuse.js"
 import { map } from "lodash"
-import { DoodleType, NormalizedDoodle } from "~/data/doodles"
+import { QueryOrder, Resolvers } from "~/types/graphql"
+import { NormalizedDoodle } from "~/types/NormalizedDoodle"
 import { countries, doodles, tags, types } from "../db"
 
 const latestDoodles = doodles
 const oldestDoodles = doodles.slice().reverse()
 
-export enum QueryOrder {
-  latest = "latest",
-  oldest = "oldest",
-}
-
 export const queryTypeDef = gql`
   enum QueryOrder {
-    latest
-    oldest
+    Latest
+    Oldest
   }
 
   type Query {
@@ -25,8 +21,8 @@ export const queryTypeDef = gql`
       order: QueryOrder
 
       type: String
-      countries: [String]
-      tags: [String]
+      countries: [String!]
+      tags: [String!]
 
       searchText: String
     ): [Doodle]!
@@ -35,45 +31,29 @@ export const queryTypeDef = gql`
   }
 `
 
-export const queryResolver = {
-  doodles: (
-    _: unknown,
-    params: {
-      offset?: number
-      limit?: number
-      order?: QueryOrder
+export const queryResolver: Resolvers["Query"] = {
+  doodles: (_, args) => {
+    const offset = args.offset ?? 0
+    const limit = args.limit ?? 1
+    const order = args.order ?? QueryOrder.Latest
 
-      type?: DoodleType
-      countries?: string[]
-      tags?: string[]
+    const { type, countries, tags, searchText } = args
 
-      searchText?: string
-    }
-  ) => {
-    const {
-      offset = 0,
-      limit = 5,
-      order = QueryOrder.latest,
-
-      type,
-      countries = [],
-      tags = [],
-
-      searchText,
-    } = params
-
-    let results = order === QueryOrder.latest ? latestDoodles : oldestDoodles
+    let results = order === QueryOrder.Latest ? latestDoodles : oldestDoodles
 
     if (searchText) {
-      const fuse = order === QueryOrder.latest ? latestDoodlesFuse : oldestDoodlesFuse
+      const fuse = order === QueryOrder.Latest ? latestDoodlesFuse : oldestDoodlesFuse
       const matches = fuse.search(searchText)
       results = map(matches, "item")
     }
 
     results = results.filter(doodle => {
-      const hasAllCountries = countries.every(country => doodle.countries.includes(country))
-      const hasAllTags = tags.every(tags => doodle.tags.includes(tags))
       const isSameType = !type || doodle.type === type
+
+      const hasAllCountries =
+        !countries || countries.every(country => doodle.countries.includes(country))
+
+      const hasAllTags = !tags || tags.every(tags => doodle.tags.includes(tags))
 
       return hasAllCountries && hasAllTags && isSameType
     })

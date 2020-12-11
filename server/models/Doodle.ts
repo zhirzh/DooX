@@ -1,55 +1,45 @@
-import { gql } from "apollo-server-express"
+import { gql } from "apollo-server"
 import { matchesProperty } from "lodash"
-import { NormalizedDoodle } from "~/data/doodles"
+import { Resolvers } from "~/types/graphql"
 import { doodles } from "../db"
 import { normalizeSimpleMap } from "../utils"
 
-type DoodleOmitKeyNormalizedDoodle =
-  | "historyDoodles"
-  | "nextDoodle"
-  | "prevDoodle"
-  | "relatedDoodles"
-
-export interface Doodle extends Omit<NormalizedDoodle, DoodleOmitKeyNormalizedDoodle> {
-  nextDoodle?: Doodle // missing for latest doodle
-  prevDoodle?: Doodle // missing for oldest doodle
-  historyDoodles: Doodle[]
-  relatedDoodles: Doodle[]
-}
-
 export const doodleTypeDef = gql`
+  # Overriden with "DoodleType" in "~/types/NormalizedDoodle.ts"
+  scalar DoodleType
+
   type Doodle {
-    id: String!
+    id: ID!
     gid: Int
     alternate_url: String!
     blog_text: String!
     call_to_action_image_url: String!
     collection_id: Int!
-    countries: [String]!
+    countries: [String!]!
     date: String!
-    doodle_args: [DoodleArg]!
+    doodle_args: [DoodleArg!]!
     height: Int!
     high_res_height: Int!
     high_res_url: String!
     high_res_width: Int!
-    historyDoodles: [Doodle]!
+    history_doodles: [Doodle!]!
     is_animated_gif: Boolean!
     is_dynamic: Boolean!
     is_global: Boolean!
     is_highlighted: Boolean!
     name: String!
-    nextDoodle: Doodle
+    next_doodle: Doodle
     persistent_id: Int!
-    prevDoodle: Doodle
+    prev_doodle: Doodle
     query: String!
-    relatedDoodles: [Doodle]!
+    related_doodles: [Doodle!]!
     share_text: String!
     standalone_html: String!
-    tags: [String]!
+    tags: [String!]!
     title: String!
-    translated_blog_posts: [TranslatedBlogPost]!
-    translations: [Translation]!
-    type: String!
+    translated_blog_posts: [TranslatedBlogPost!]!
+    translations: [Translation!]!
+    type: DoodleType!
     url: String!
     width: Int!
     youtube_id: String!
@@ -82,21 +72,18 @@ export const doodleTypeDef = gql`
   }
 `
 
-export const doodleResolver = {
-  nextDoodle: (doodle: NormalizedDoodle) =>
-    doodle.nextDoodle ? doodles.find(matchesProperty("id", doodle.nextDoodle)) : undefined,
+export const doodleResolver: Partial<Resolvers["Doodle"]> = {
+  next_doodle: doodle => doodles.find(matchesProperty("id", doodle.next_doodle)) || null,
 
-  prevDoodle: (doodle: NormalizedDoodle) =>
-    doodle.prevDoodle ? doodles.find(matchesProperty("id", doodle.prevDoodle)) : undefined,
+  prev_doodle: doodle => doodles.find(matchesProperty("id", doodle.prev_doodle)) || null,
 
-  historyDoodles: (doodle: NormalizedDoodle) =>
-    doodle.historyDoodles.map(id => doodles.find(matchesProperty("id", id))!),
+  history_doodles: doodle =>
+    doodle.history_doodles.map(id => doodles.find(matchesProperty("id", id))!),
 
-  relatedDoodles: (doodle: NormalizedDoodle) =>
-    doodle.relatedDoodles.map(id => doodles.find(matchesProperty("id", id))!),
+  related_doodles: doodle =>
+    doodle.related_doodles.map(id => doodles.find(matchesProperty("id", id))!),
 
-  translated_blog_posts: (doodle: NormalizedDoodle) =>
-    normalizeSimpleMap(doodle.translated_blog_posts),
+  translated_blog_posts: doodle => normalizeSimpleMap(doodle.translated_blog_posts),
 
-  translations: (doodle: NormalizedDoodle) => normalizeSimpleMap(doodle.translations),
+  translations: doodle => normalizeSimpleMap(doodle.translations),
 }

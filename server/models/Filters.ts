@@ -1,16 +1,10 @@
-import { gql } from "apollo-server-express"
-
-export interface Filters {
-  types: [String]
-  countries: [String]
-  tags: [String]
-}
+import { gql } from "apollo-server"
 
 export const filtersTypeDef = gql`
   type Filters {
-    types: [String]!
-    countries: [String]!
-    tags: [String]!
+    types: [String!]!
+    countries: [String!]!
+    tags: [String!]!
   }
 `
 

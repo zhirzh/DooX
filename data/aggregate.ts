@@ -2,9 +2,9 @@ import { readdirSync } from "fs"
 import { orderBy } from "lodash"
 import { join } from "path"
 import { dumpDir, dumpFile } from "~/paths"
-import { GoogleDoodle } from "./doodles"
+import { GoogleDoodle } from "~/types/GoogleDoodle"
 import { readJson, writeJson } from "./utils"
-import { getDoodleDate } from "./doodle-utils"
+import { getDoodleDate } from "./utils.doodle"
 
 export default () => {
   console.log("aggregate")

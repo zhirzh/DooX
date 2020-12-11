@@ -1,28 +1,5 @@
-export type DoodleId = string
-
-export type DoodleType = "simple" | "interactive" | "slideshow" | "video"
-
-export type NormalizedDoodleOmitKeyGoogleDoodle =
-  | "doodle_type"
-  | "history_doodles"
-  | "next_doodle"
-  | "prev_doodle"
-  | "related_doodles"
-  | "run_date_array"
-
-export interface NormalizedDoodle extends Omit<GoogleDoodle, NormalizedDoodleOmitKeyGoogleDoodle> {
-  id: DoodleId
-  gid: GoogleDoodle["id"]
-  date: string // ISO datestamp
-  historyDoodles: DoodleId[]
-  nextDoodle?: DoodleId // missing for latest doodle
-  prevDoodle?: DoodleId // missing for oldest doodle
-  relatedDoodles: DoodleId[]
-  type: DoodleType
-}
-
 export interface GoogleDoodle {
-  id?: number
+  id: number | null
   alternate_url: string
   blog_text: string
   call_to_action_image_url: string
@@ -40,9 +17,9 @@ export interface GoogleDoodle {
   is_global: boolean
   is_highlighted: boolean
   name: string
-  next_doodle?: SiblingDoodle // missing for latest doodle
+  next_doodle: SiblingDoodle | null // null for latest doodle
   persistent_id: number
-  prev_doodle?: SiblingDoodle // missing for oldest doodle
+  prev_doodle: SiblingDoodle | null // null for oldest doodle
   query: string
   related_doodles: RelatedDoodle[]
   run_date_array: RunDateArray
@@ -86,7 +63,7 @@ interface PrimaryHistoryDoodle {
 }
 
 interface AlternateHistoryDoodle {
-  id?: number
+  id: number | null
   background_color: string
   call_to_action_image_url: string
   cta_slot_id: number
@@ -141,8 +118,8 @@ interface DoodleArg {
 interface Translations {
   [lang: string]: {
     share_text: string
-    hover_text?: string
-    query?: string
+    hover_text: string | null
+    query: string | null
   }
 }
 

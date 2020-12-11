@@ -1,5 +1,6 @@
 import { createHash } from "crypto"
-import { DoodleId, DoodleType, GoogleDoodle } from "./doodles"
+import { GoogleDoodle } from "~/types/GoogleDoodle"
+import { DoodleId, DoodleType } from "~/types/NormalizedDoodle"
 
 export const getDoodleId = ({ name, url }: Pick<GoogleDoodle, "name" | "url">): DoodleId =>
   createHash("md5").update(`${name}:${url}`).digest("hex").slice(0, 10)

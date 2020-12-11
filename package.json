@@ -2,12 +2,18 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
-    "server": "yarn tsnode server/index.ts",
-    "server:dev": "nodemon -e ts -w server/ -x 'yarn server'",
-    "tsnode": "node -r esm -r ts-node/register -r tsconfig-paths/register -r dotenv/config"
+    "data": "yarn data/index.ts",
+    "server": "yarn ts:node server/index.ts",
+    "server:watch": "nodemon -e ts -w server/ -x 'yarn server'",
+    "ts:codegen": "graphql-codegen -c ts-codegen.yml",
+    "ts:codegen:watch": "yarn ts:codegen -w",
+    "ts:node": "node -r esm -r ts-node/register -r tsconfig-paths/register -r dotenv/config"
   },
   "dependencies": {
     "@babel/core": "~7.9.0",
+    "@graphql-codegen/cli": "^1.19.4",
+    "@graphql-codegen/typescript": "1.19.0",
+    "@graphql-codegen/typescript-resolvers": "^1.18.0",
     "@types/lodash": "^4.14.165",
     "@types/node": "^14.14.12",
     "@types/node-fetch": "^2.5.7",
