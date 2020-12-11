@@ -1,19 +1,31 @@
 {
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start"
+    "start": "expo start",
+    "tsnode": "node -r esm -r ts-node/register -r tsconfig-paths/register -r dotenv/config"
   },
   "dependencies": {
     "@babel/core": "~7.9.0",
+    "@types/lodash": "^4.14.165",
+    "@types/node": "^14.14.12",
+    "@types/node-fetch": "^2.5.7",
     "@types/react": "~16.9.35",
     "@types/react-dom": "~16.9.8",
     "@types/react-native": "~0.63.2",
+    "date-fns": "^2.16.1",
+    "dotenv": "^8.2.0",
+    "esm": "^3.2.25",
     "expo": "~40.0.0",
     "expo-status-bar": "~1.0.3",
+    "lodash": "^4.17.20",
+    "node-fetch": "^2.6.1",
+    "prettier": "^2.2.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",
     "react-native-web": "~0.13.12",
+    "ts-node": "^9.1.1",
+    "tsconfig-paths": "^3.9.0",
     "typescript": "~4.0.0"
   }
 }
