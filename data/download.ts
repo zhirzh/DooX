@@ -8,6 +8,8 @@ import { writeJson } from "./utils"
 
 const workerCount = 10
 
+const firstMonth = new Date(1998, 7) // 1998 August
+
 export default async () => {
   console.log("download")
 
@@ -16,8 +18,6 @@ export default async () => {
     shouldDownloadAll = true
     mkdirSync(dumpDir)
   }
-
-  const firstMonth = new Date(1998, 7) // 1998 August
 
   const currMonth = startOfMonth(Date.now())
   const prevMonth = subMonths(currMonth, 1)

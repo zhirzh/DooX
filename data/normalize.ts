@@ -30,8 +30,8 @@ export default () => {
 
     const doodle: NormalizedDoodle = {
       ...omit(googleDoodle, omitKeys),
-
       gid: googleDoodle.id,
+
       id: getDoodleId(googleDoodle),
       date: getDoodleDateString(googleDoodle),
       type: getDoodleType(googleDoodle, Object.keys(extraInteractiveDoodles)),

@@ -18,7 +18,6 @@ export type Scalars = {
 }
 
 export type Doodle = {
-  __typename?: "Doodle"
   id: Scalars["ID"]
   gid: Maybe<Scalars["Int"]>
   alternate_url: Scalars["String"]
@@ -56,38 +55,32 @@ export type Doodle = {
 }
 
 export type DoodleArg = {
-  __typename?: "DoodleArg"
   name: Scalars["String"]
   value: Scalars["String"]
 }
 
 export type Translation = {
-  __typename?: "Translation"
   _key: Scalars["String"]
   _value: _Translation
 }
 
 export type _Translation = {
-  __typename?: "_Translation"
   share_text: Scalars["String"]
   hover_text: Maybe<Scalars["String"]>
   query: Maybe<Scalars["String"]>
 }
 
 export type TranslatedBlogPost = {
-  __typename?: "TranslatedBlogPost"
   _key: Scalars["String"]
   _value: _TranslatedBlogPost
 }
 
 export type _TranslatedBlogPost = {
-  __typename?: "_TranslatedBlogPost"
   blog_post: Scalars["String"]
   language: Scalars["String"]
 }
 
 export type Filters = {
-  __typename?: "Filters"
   types: Array<Scalars["String"]>
   countries: Array<Scalars["String"]>
   tags: Array<Scalars["String"]>
@@ -99,8 +92,7 @@ export enum QueryOrder {
 }
 
 export type Query = {
-  __typename?: "Query"
-  doodles: Array<Maybe<Doodle>>
+  doodles: Array<Doodle>
   filters: Filters
 }
 
@@ -108,10 +100,10 @@ export type QueryDoodlesArgs = {
   limit: Maybe<Scalars["Int"]>
   offset: Maybe<Scalars["Int"]>
   order: Maybe<QueryOrder>
+  searchText: Maybe<Scalars["String"]>
   type: Maybe<Scalars["String"]>
   countries: Maybe<Array<Scalars["String"]>>
   tags: Maybe<Array<Scalars["String"]>>
-  searchText: Maybe<Scalars["String"]>
 }
 
 export type ResolverTypeWrapper<T> = Promise<T> | T
@@ -351,7 +343,7 @@ export type QueryResolvers<
   ParentType extends ResolversParentTypes["Query"] = ResolversParentTypes["Query"]
 > = {
   doodles: Resolver<
-    Array<Maybe<ResolversTypes["Doodle"]>>,
+    Array<ResolversTypes["Doodle"]>,
     ParentType,
     ContextType,
     RequireFields<QueryDoodlesArgs, never>
@@ -376,3 +368,9 @@ export type Resolvers<ContextType = any> = {
  * Use "Resolvers" root object instead. If you wish to get "IResolvers", add "typesPrefix: I" to your config.
  */
 export type IResolvers<ContextType = any> = Resolvers<ContextType>
+
+export type DoodlesQueryVariables = Exact<{
+  offset: Maybe<Scalars["Int"]>
+}>
+
+export type DoodlesQuery = { doodles: Array<Pick<Doodle, "id" | "title" | "url">> }

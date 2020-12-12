@@ -1,15 +1,21 @@
 schema: server/models/**/*.ts
 
+documents: client/**/*.{ts,tsx}
+
 generates:
   types/graphql.ts:
     plugins:
       - typescript
       - typescript-resolvers
+      - typescript-operations
 
     config:
       avoidOptionals: true
+      skipTypename: true
+
       scalars:
         DoodleType: ~/types/NormalizedDoodle#DoodleType
+
       mappers:
         Doodle: ~/types/NormalizedDoodle#NormalizedDoodle
 

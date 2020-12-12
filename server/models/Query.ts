@@ -2,11 +2,7 @@ import { gql } from "apollo-server"
 import Fuse from "fuse.js"
 import { map } from "lodash"
 import { QueryOrder, Resolvers } from "~/types/graphql"
-import { NormalizedDoodle } from "~/types/NormalizedDoodle"
 import { countries, doodles, tags, types } from "../db"
-
-const latestDoodles = doodles
-const oldestDoodles = doodles.slice().reverse()
 
 export const queryTypeDef = gql`
   enum QueryOrder {
@@ -20,12 +16,12 @@ export const queryTypeDef = gql`
       offset: Int
       order: QueryOrder
 
+      searchText: String
+
       type: String
       countries: [String!]
       tags: [String!]
-
-      searchText: String
-    ): [Doodle]!
+    ): [Doodle!]!
 
     filters: Filters!
   }
@@ -37,15 +33,9 @@ export const queryResolver: Resolvers["Query"] = {
     const limit = args.limit ?? 1
     const order = args.order ?? QueryOrder.Latest
 
-    const { type, countries, tags, searchText } = args
+    const { searchText, type, countries, tags } = args
 
-    let results = order === QueryOrder.Latest ? latestDoodles : oldestDoodles
-
-    if (searchText) {
-      const fuse = order === QueryOrder.Latest ? latestDoodlesFuse : oldestDoodlesFuse
-      const matches = fuse.search(searchText)
-      results = map(matches, "item")
-    }
+    let results = !searchText ? doodles.slice() : map(fuse.search(searchText), "item")
 
     results = results.filter(doodle => {
       const isSameType = !type || doodle.type === type
@@ -57,6 +47,10 @@ export const queryResolver: Resolvers["Query"] = {
 
       return hasAllCountries && hasAllTags && isSameType
     })
+
+    if (order !== QueryOrder.Latest) {
+      results.reverse()
+    }
 
     return results.slice(offset, offset + limit)
   },
@@ -74,11 +68,8 @@ const fuseSearchKeys: Fuse.FuseOptionKeyObject[] = [
   { name: "countries", weight: 1 },
 ]
 
-const fuseOptions: Fuse.IFuseOptions<NormalizedDoodle> = {
-  keys: fuseSearchKeys,
-}
-
-const fuseIndex = Fuse.createIndex(map(fuseSearchKeys, "name"), latestDoodles)
-
-const latestDoodlesFuse = new Fuse(latestDoodles, fuseOptions, fuseIndex)
-const oldestDoodlesFuse = new Fuse(oldestDoodles, fuseOptions, fuseIndex)
+const fuse = new Fuse(
+  doodles,
+  { keys: fuseSearchKeys },
+  Fuse.createIndex(map(fuseSearchKeys, "name"), doodles)
+)

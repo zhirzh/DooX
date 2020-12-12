@@ -4,7 +4,7 @@ import { doodleResolver, doodleTypeDef } from "./models/Doodle"
 import { filtersResolver, filtersTypeDef } from "./models/Filters"
 import { queryResolver, queryTypeDef } from "./models/Query"
 
-const host = process.env.HOST!
+const ip = process.env.IP!
 const port = parseInt(process.env.PORT!)
 
 const server = new ApolloServer({
@@ -18,6 +18,6 @@ const server = new ApolloServer({
   logger: consoleLogger,
 })
 
-server.listen({ host, port }).then(({ url }) => {
+server.listen({ ip, port }).then(({ url }) => {
   consoleLogger.info(`server started @ ${url}`)
 })
