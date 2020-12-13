@@ -1,0 +1,28 @@
+enum QueryOrder {
+  Latest
+  Oldest
+}
+
+type Filters {
+  types: [String!]!
+  countries: [String!]!
+  tags: [String!]!
+}
+
+type Query {
+  filters: Filters!
+
+  historyDoodles(month: Int!, day: Int!): [Doodle!]!
+
+  doodles(
+    limit: Int
+    offset: Int
+    order: QueryOrder
+
+    searchText: String
+
+    type: String
+    countries: [String!]
+    tags: [String!]
+  ): [Doodle!]!
+}

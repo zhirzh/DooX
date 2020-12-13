@@ -1,14 +1,13 @@
-import { gql, useQuery } from "@apollo/client"
 import { startOfToday } from "date-fns"
 import React, { FC } from "react"
 import { FlatList, StyleSheet } from "react-native"
-import { HistoryDoodlesQuery, QueryHistoryDoodlesArgs } from "~/types/graphql"
+import { useHistoryDoodlesQuery } from "../../types/graphql"
 import Circle from "./Circle"
 
 const HistoryReel: FC = () => {
   const today = startOfToday()
 
-  const { data } = useQuery<HistoryDoodlesQuery, QueryHistoryDoodlesArgs>(historyDoodlesQuery, {
+  const { data } = useHistoryDoodlesQuery({
     variables: {
       month: today.getMonth(),
       day: today.getDate(),
@@ -25,16 +24,6 @@ const HistoryReel: FC = () => {
     />
   )
 }
-
-const historyDoodlesQuery = gql`
-  query historyDoodles($month: Int, $day: Int) {
-    historyDoodles(month: $month, day: $day) {
-      id
-      title
-      url
-    }
-  }
-`
 
 const styles = StyleSheet.create({
   reel: {

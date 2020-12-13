@@ -1,17 +1,21 @@
+import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader"
+import { loadTypedefsSync } from "@graphql-tools/load"
 import { ApolloServer } from "apollo-server"
 import LoggerPlugin, { consoleLogger } from "./LoggerPlugin"
-import { doodleResolver, doodleTypeDef } from "./models/Doodle"
-import { filtersResolver, filtersTypeDef } from "./models/Filters"
-import { queryResolver, queryTypeDef } from "./models/Query"
+import doodleResolver from "./resolvers/Doodle"
+import queryResolver from "./resolvers/Query"
 
 const ip = process.env.IP!
 const port = parseInt(process.env.PORT!)
 
+const typeDefs = loadTypedefsSync("graphql/schema/**/*", {
+  loaders: [new GraphQLFileLoader()],
+})
+
 const server = new ApolloServer({
-  typeDefs: [doodleTypeDef, filtersTypeDef, queryTypeDef],
+  typeDefs: typeDefs.map(source => source.document!),
   resolvers: {
     Doodle: doodleResolver,
-    Filters: filtersResolver,
     Query: queryResolver,
   },
   plugins: [new LoggerPlugin()],

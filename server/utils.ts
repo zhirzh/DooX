@@ -1,7 +1,3 @@
-import { lowerCase, map } from "lodash"
-
-export const normalizeStrings = (strings: string[]) => map(strings, lowerCase).sort()
-
 /**
  * @example
  * normalizeSimpleMap({ a: 1, b: 2 })

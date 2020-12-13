@@ -1,42 +1,13 @@
-import { gql } from "apollo-server"
-import { startOfToday } from "date-fns"
 import Fuse from "fuse.js"
 import { map } from "lodash"
 import { QueryOrder, Resolvers } from "~/types/graphql"
 import { countries, doodles, tags, types } from "../db"
 
-export const queryTypeDef = gql`
-  enum QueryOrder {
-    Latest
-    Oldest
-  }
-
-  type Query {
-    filters: Filters!
-
-    historyDoodles(month: Int, day: Int): [Doodle!]!
-
-    doodles(
-      limit: Int
-      offset: Int
-      order: QueryOrder
-
-      searchText: String
-
-      type: String
-      countries: [String!]
-      tags: [String!]
-    ): [Doodle!]!
-  }
-`
-
-export const queryResolver: Resolvers["Query"] = {
+const resolver: Resolvers["Query"] = {
   filters: () => ({ types, countries, tags }),
 
   historyDoodles: (_, args) => {
-    const today = startOfToday()
-    const month = args.month || today.getMonth()
-    const day = args.day || today.getDate()
+    const { month, day } = args
 
     return doodles.filter(doodle => {
       const doodleDate = new Date(doodle.date)
@@ -86,3 +57,5 @@ const fuse = new Fuse(
   { keys: fuseSearchKeys },
   Fuse.createIndex(map(fuseSearchKeys, "name"), doodles)
 )
+
+export default resolver

@@ -1,0 +1,15 @@
+query doodles($offset: Int) {
+  doodles(offset: $offset, limit: 4) {
+    id
+    title
+    url
+  }
+}
+
+query historyDoodles($month: Int!, $day: Int!) {
+  historyDoodles(month: $month, day: $day) {
+    id
+    title
+    url
+  }
+}

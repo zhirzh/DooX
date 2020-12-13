@@ -1,6 +1,6 @@
-schema: server/models/**/*.ts
+schema: graphql/schema/**/*
 
-documents: client/**/*.{ts,tsx}
+documents: graphql/documents/**/*
 
 generates:
   types/graphql.ts:
@@ -8,6 +8,7 @@ generates:
       - typescript
       - typescript-resolvers
       - typescript-operations
+      - typescript-react-apollo
 
     config:
       avoidOptionals: true

@@ -1,6 +1,8 @@
 import { DoodleType } from "~/types/NormalizedDoodle"
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from "graphql"
 import { NormalizedDoodle } from "~/types/NormalizedDoodle"
+import { gql } from "@apollo/client"
+import * as Apollo from "@apollo/client"
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> }
@@ -80,15 +82,15 @@ export type _TranslatedBlogPost = {
   language: Scalars["String"]
 }
 
+export enum QueryOrder {
+  Latest = "Latest",
+  Oldest = "Oldest",
+}
+
 export type Filters = {
   types: Array<Scalars["String"]>
   countries: Array<Scalars["String"]>
   tags: Array<Scalars["String"]>
-}
-
-export enum QueryOrder {
-  Latest = "Latest",
-  Oldest = "Oldest",
 }
 
 export type Query = {
@@ -98,8 +100,8 @@ export type Query = {
 }
 
 export type QueryHistoryDoodlesArgs = {
-  month: Maybe<Scalars["Int"]>
-  day: Maybe<Scalars["Int"]>
+  month: Scalars["Int"]
+  day: Scalars["Int"]
 }
 
 export type QueryDoodlesArgs = {
@@ -216,8 +218,8 @@ export type ResolversTypes = {
   _Translation: ResolverTypeWrapper<_Translation>
   TranslatedBlogPost: ResolverTypeWrapper<TranslatedBlogPost>
   _TranslatedBlogPost: ResolverTypeWrapper<_TranslatedBlogPost>
-  Filters: ResolverTypeWrapper<Filters>
   QueryOrder: QueryOrder
+  Filters: ResolverTypeWrapper<Filters>
   Query: ResolverTypeWrapper<{}>
 }
 
@@ -353,7 +355,7 @@ export type QueryResolvers<
     Array<ResolversTypes["Doodle"]>,
     ParentType,
     ContextType,
-    RequireFields<QueryHistoryDoodlesArgs, never>
+    RequireFields<QueryHistoryDoodlesArgs, "month" | "day">
   >
   doodles: Resolver<
     Array<ResolversTypes["Doodle"]>,
@@ -381,15 +383,104 @@ export type Resolvers<ContextType = any> = {
  */
 export type IResolvers<ContextType = any> = Resolvers<ContextType>
 
-export type HistoryDoodlesQueryVariables = Exact<{
-  month: Maybe<Scalars["Int"]>
-  day: Maybe<Scalars["Int"]>
-}>
-
-export type HistoryDoodlesQuery = { historyDoodles: Array<Pick<Doodle, "id" | "title" | "url">> }
-
 export type DoodlesQueryVariables = Exact<{
   offset: Maybe<Scalars["Int"]>
 }>
 
 export type DoodlesQuery = { doodles: Array<Pick<Doodle, "id" | "title" | "url">> }
+
+export type HistoryDoodlesQueryVariables = Exact<{
+  month: Scalars["Int"]
+  day: Scalars["Int"]
+}>
+
+export type HistoryDoodlesQuery = { historyDoodles: Array<Pick<Doodle, "id" | "title" | "url">> }
+
+export const DoodlesDocument = gql`
+  query doodles($offset: Int) {
+    doodles(offset: $offset, limit: 4) {
+      id
+      title
+      url
+    }
+  }
+`
+
+/**
+ * __useDoodlesQuery__
+ *
+ * To run a query within a React component, call `useDoodlesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDoodlesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDoodlesQuery({
+ *   variables: {
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useDoodlesQuery(
+  baseOptions?: Apollo.QueryHookOptions<DoodlesQuery, DoodlesQueryVariables>
+) {
+  return Apollo.useQuery<DoodlesQuery, DoodlesQueryVariables>(DoodlesDocument, baseOptions)
+}
+export function useDoodlesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<DoodlesQuery, DoodlesQueryVariables>
+) {
+  return Apollo.useLazyQuery<DoodlesQuery, DoodlesQueryVariables>(DoodlesDocument, baseOptions)
+}
+export type DoodlesQueryHookResult = ReturnType<typeof useDoodlesQuery>
+export type DoodlesLazyQueryHookResult = ReturnType<typeof useDoodlesLazyQuery>
+export type DoodlesQueryResult = Apollo.QueryResult<DoodlesQuery, DoodlesQueryVariables>
+export const HistoryDoodlesDocument = gql`
+  query historyDoodles($month: Int!, $day: Int!) {
+    historyDoodles(month: $month, day: $day) {
+      id
+      title
+      url
+    }
+  }
+`
+
+/**
+ * __useHistoryDoodlesQuery__
+ *
+ * To run a query within a React component, call `useHistoryDoodlesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useHistoryDoodlesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useHistoryDoodlesQuery({
+ *   variables: {
+ *      month: // value for 'month'
+ *      day: // value for 'day'
+ *   },
+ * });
+ */
+export function useHistoryDoodlesQuery(
+  baseOptions: Apollo.QueryHookOptions<HistoryDoodlesQuery, HistoryDoodlesQueryVariables>
+) {
+  return Apollo.useQuery<HistoryDoodlesQuery, HistoryDoodlesQueryVariables>(
+    HistoryDoodlesDocument,
+    baseOptions
+  )
+}
+export function useHistoryDoodlesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<HistoryDoodlesQuery, HistoryDoodlesQueryVariables>
+) {
+  return Apollo.useLazyQuery<HistoryDoodlesQuery, HistoryDoodlesQueryVariables>(
+    HistoryDoodlesDocument,
+    baseOptions
+  )
+}
+export type HistoryDoodlesQueryHookResult = ReturnType<typeof useHistoryDoodlesQuery>
+export type HistoryDoodlesLazyQueryHookResult = ReturnType<typeof useHistoryDoodlesLazyQuery>
+export type HistoryDoodlesQueryResult = Apollo.QueryResult<
+  HistoryDoodlesQuery,
+  HistoryDoodlesQueryVariables
+>
