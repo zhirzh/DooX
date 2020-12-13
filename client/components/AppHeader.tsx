@@ -28,7 +28,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   search: {
-    padding: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 12,
   },
 })
 

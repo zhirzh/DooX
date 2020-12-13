@@ -92,8 +92,14 @@ export enum QueryOrder {
 }
 
 export type Query = {
-  doodles: Array<Doodle>
   filters: Filters
+  historyDoodles: Array<Doodle>
+  doodles: Array<Doodle>
+}
+
+export type QueryHistoryDoodlesArgs = {
+  month: Maybe<Scalars["Int"]>
+  day: Maybe<Scalars["Int"]>
 }
 
 export type QueryDoodlesArgs = {
@@ -342,13 +348,19 @@ export type QueryResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Query"] = ResolversParentTypes["Query"]
 > = {
+  filters: Resolver<ResolversTypes["Filters"], ParentType, ContextType>
+  historyDoodles: Resolver<
+    Array<ResolversTypes["Doodle"]>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryHistoryDoodlesArgs, never>
+  >
   doodles: Resolver<
     Array<ResolversTypes["Doodle"]>,
     ParentType,
     ContextType,
     RequireFields<QueryDoodlesArgs, never>
   >
-  filters: Resolver<ResolversTypes["Filters"], ParentType, ContextType>
 }
 
 export type Resolvers<ContextType = any> = {
@@ -368,6 +380,13 @@ export type Resolvers<ContextType = any> = {
  * Use "Resolvers" root object instead. If you wish to get "IResolvers", add "typesPrefix: I" to your config.
  */
 export type IResolvers<ContextType = any> = Resolvers<ContextType>
+
+export type HistoryDoodlesQueryVariables = Exact<{
+  month: Maybe<Scalars["Int"]>
+  day: Maybe<Scalars["Int"]>
+}>
+
+export type HistoryDoodlesQuery = { historyDoodles: Array<Pick<Doodle, "id" | "title" | "url">> }
 
 export type DoodlesQueryVariables = Exact<{
   offset: Maybe<Scalars["Int"]>

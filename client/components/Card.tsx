@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react"
 import { Image, StyleSheet, Text, useWindowDimensions } from "react-native"
 import { faintGray } from "../colors"
-import Space from "./Space"
+import Separator from "./Separator"
 
 const Card: FC<Props> = ({ title, imageUrl }) => {
   const [aspect, setAspect] = useState(2.5)
@@ -12,9 +12,9 @@ const Card: FC<Props> = ({ title, imageUrl }) => {
 
   return (
     <>
-      <Text style={styles.title}>{title}</Text>
+      <Separator />
 
-      <Space width="100%" color={faintGray} height={1} />
+      <Text style={styles.title}>{title}</Text>
 
       <Image
         style={{ backgroundColor: loading ? faintGray : undefined }}
@@ -37,7 +37,9 @@ interface Props {
 
 const styles = StyleSheet.create({
   title: {
-    padding: 8,
+    paddingHorizontal: 8,
+    paddingTop: 16,
+    paddingBottom: 8,
     fontSize: 16,
   },
 })
