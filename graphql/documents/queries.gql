@@ -1,5 +1,5 @@
-query doodles($offset: Int) {
-  doodles(offset: $offset, limit: 4) {
+query doodles($offset: Int, $searchText: String) {
+  doodles(limit: 4, offset: $offset, searchText: $searchText) {
     id
     title
     url

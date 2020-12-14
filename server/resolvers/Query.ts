@@ -25,7 +25,7 @@ const resolver: Resolvers["Query"] = {
 
     const { searchText, type, countries, tags } = args
 
-    let results = !searchText ? doodles.slice() : map(fuse.search(searchText), "item")
+    let results = searchText ? map(fuse.search(searchText), "item") : doodles.slice()
 
     results = results.filter(doodle => {
       const isSameType = !type || doodle.type === type
@@ -39,10 +39,12 @@ const resolver: Resolvers["Query"] = {
     })
 
     if (order !== QueryOrder.Latest) {
-      results.reverse()
+      results = results.reverse()
     }
 
-    return results.slice(offset, offset + limit)
+    results = results.slice(offset, offset + Math.max(0, limit))
+
+    return results
   },
 }
 

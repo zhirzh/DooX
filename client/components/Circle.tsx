@@ -3,7 +3,7 @@ import { Image, StyleSheet, Text, View } from "react-native"
 import { faintGray } from "../colors"
 
 const size = 64
-const captionSpace = 16
+const captionSpace = 24
 
 const Circle: FC<Props> = ({ caption, imageUrl }) => {
   const [loading, setLoading] = useState(true)
@@ -35,7 +35,7 @@ interface Props {
 const styles = StyleSheet.create({
   wrapper: {
     alignItems: "center",
-    width: size + 2 * captionSpace,
+    width: size + captionSpace,
   },
   circle: {
     width: size,

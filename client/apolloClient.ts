@@ -1,6 +1,6 @@
-import { ApolloClient, FieldMergeFunction, FieldReadFunction, InMemoryCache } from "@apollo/client"
+import { ApolloClient, InMemoryCache } from "@apollo/client"
+import { offsetLimitPagination } from "@apollo/client/utilities"
 import Constants from "expo-constants"
-import { Doodle } from "~/types/graphql"
 
 const { ip, port } = Constants.manifest.extra
 
@@ -11,35 +11,11 @@ const createApolloClient = () =>
       typePolicies: {
         Query: {
           fields: {
-            doodles: {
-              keyArgs: false,
-              merge: mergeQueryDoodles,
-              read: readQueryDoodles,
-            },
+            doodles: offsetLimitPagination(["searchText"]),
           },
         },
       },
     }),
   })
-
-type DoodleMapById = Map<Doodle["id"], Doodle>
-
-const mergeQueryDoodles: FieldMergeFunction<DoodleMapById, Doodle[]> = (
-  existing,
-  incoming,
-  { readField }
-) => {
-  const merged = existing ? new Map(existing as DoodleMapById) : new Map()
-
-  incoming.forEach(doodle => {
-    const id = readField("id", doodle) as string
-    merged?.set(id, doodle)
-  })
-
-  return merged
-}
-
-const readQueryDoodles: FieldReadFunction<DoodleMapById, Doodle[]> = existing =>
-  existing && Array.from(existing.values())
 
 export default createApolloClient

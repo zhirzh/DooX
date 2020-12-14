@@ -7,3 +7,5 @@ export const blackHighlight = "#0001"
 export const gray = "#aaa"
 export const lightGray = "#ccc"
 export const faintGray = "#eee"
+
+export const blue = "#18f"

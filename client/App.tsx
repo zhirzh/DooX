@@ -4,20 +4,18 @@ import React, { FC } from "react"
 import { SafeAreaView } from "react-native"
 import createApolloClient from "./apolloClient"
 import { white } from "./colors"
-import AppHeader from "./components/AppHeader"
-import Reel from "./components/Reel"
+import Root from "./Root"
 
-const Root: FC = () => (
+const App: FC = () => (
   <>
     <StatusBar style="auto" translucent={false} backgroundColor={white} />
 
     <ApolloProvider client={createApolloClient()}>
       <SafeAreaView style={{ flex: 1 }}>
-        <AppHeader />
-        <Reel />
+        <Root />
       </SafeAreaView>
     </ApolloProvider>
   </>
 )
 
-export default Root
+export default App

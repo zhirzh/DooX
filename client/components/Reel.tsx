@@ -1,24 +1,29 @@
-import React, { FC, useState } from "react"
+import { NetworkStatus } from "@apollo/client"
+import React, { FC, useEffect, useState } from "react"
 import { ActivityIndicator, FlatList, Platform, RefreshControl } from "react-native"
-import { useDoodlesQuery } from "../../types/graphql"
+import { useDoodlesQuery } from "~/types/graphql"
 import { black } from "../colors"
 import Card from "./Card"
 import HistoryReel from "./HistoryReel"
 import Separator from "./Separator"
 import Space from "./Space"
 
-const Reel: FC = () => {
+const Reel: FC<Props> = ({ searchText }) => {
   const [separatorVisible, setSeparatorVisible] = useState(false)
 
-  const { loading, data, fetchMore, refetch } = useDoodlesQuery({
+  const { loading, data, networkStatus, fetchMore, refetch } = useDoodlesQuery({
     notifyOnNetworkStatusChange: true,
-    variables: { offset: 0 },
   })
 
-  const [refreshing, setRefreshing] = useState(false)
-  if (refreshing && !loading) {
-    setRefreshing(false)
-  }
+  useEffect(() => {
+    if (loading) {
+      return
+    }
+
+    refetch({ offset: 0, searchText })
+  }, [searchText])
+
+  const refetching = networkStatus === NetworkStatus.refetch
 
   return (
     <>
@@ -28,8 +33,18 @@ const Reel: FC = () => {
         data={data?.doodles}
         keyExtractor={doodle => doodle.id}
         renderItem={({ item: doodle }) => <Card title={doodle.title} imageUrl={doodle.url} />}
-        ItemSeparatorComponent={() => <Space height={20} />}
-        ListHeaderComponent={<HistoryReel />}
+        ItemSeparatorComponent={() => (
+          <>
+            <Space height={20} />
+            <Separator />
+          </>
+        )}
+        ListHeaderComponent={
+          <>
+            <HistoryReel />
+            <Separator />
+          </>
+        }
         ListFooterComponent={
           loading ? (
             <ActivityIndicator
@@ -41,26 +56,35 @@ const Reel: FC = () => {
         }
         refreshControl={
           <RefreshControl
-            refreshing={refreshing}
+            refreshing={refetching}
             onRefresh={() => {
-              refetch({ offset: 1 })
-              setRefreshing(true)
+              if (loading) {
+                return
+              }
+
+              refetch({ searchText })
             }}
           />
         }
         onScroll={e => {
-          setSeparatorVisible(e.nativeEvent.contentOffset.y > 5)
+          setSeparatorVisible(e.nativeEvent.contentOffset.y > 1)
         }}
         onEndReached={() => {
-          if (!loading) {
-            fetchMore({
-              variables: { offset: data!.doodles.length },
-            })
+          if (loading) {
+            return
           }
+
+          fetchMore({
+            variables: { offset: data!.doodles.length },
+          })
         }}
       />
     </>
   )
+}
+
+interface Props {
+  searchText: string
 }
 
 export default Reel

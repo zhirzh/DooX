@@ -1,5 +1,5 @@
 {
-  "main": "node_modules/expo/AppEntry.js",
+  "main": "client/index.ts",
   "scripts": {
     "start": "expo start",
     "data": "yarn ts:node data/index.ts",
@@ -27,6 +27,7 @@
     "@types/react-native": "~0.63.2",
     "@types/uuid": "^8.3.0",
     "apollo-server": "^2.19.0",
+    "babel-plugin-module-resolver": "^4.1.0",
     "date-fns": "^2.16.1",
     "dotenv": "^8.2.0",
     "esm": "^3.2.25",

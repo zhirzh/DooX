@@ -1,7 +1,7 @@
 import { startOfToday } from "date-fns"
 import React, { FC } from "react"
 import { FlatList, StyleSheet } from "react-native"
-import { useHistoryDoodlesQuery } from "../../types/graphql"
+import { useHistoryDoodlesQuery } from "~/types/graphql"
 import Circle from "./Circle"
 
 const HistoryReel: FC = () => {

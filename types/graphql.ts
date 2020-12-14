@@ -385,6 +385,7 @@ export type IResolvers<ContextType = any> = Resolvers<ContextType>
 
 export type DoodlesQueryVariables = Exact<{
   offset: Maybe<Scalars["Int"]>
+  searchText: Maybe<Scalars["String"]>
 }>
 
 export type DoodlesQuery = { doodles: Array<Pick<Doodle, "id" | "title" | "url">> }
@@ -397,8 +398,8 @@ export type HistoryDoodlesQueryVariables = Exact<{
 export type HistoryDoodlesQuery = { historyDoodles: Array<Pick<Doodle, "id" | "title" | "url">> }
 
 export const DoodlesDocument = gql`
-  query doodles($offset: Int) {
-    doodles(offset: $offset, limit: 4) {
+  query doodles($offset: Int, $searchText: String) {
+    doodles(limit: 4, offset: $offset, searchText: $searchText) {
       id
       title
       url
@@ -419,6 +420,7 @@ export const DoodlesDocument = gql`
  * const { data, loading, error } = useDoodlesQuery({
  *   variables: {
  *      offset: // value for 'offset'
+ *      searchText: // value for 'searchText'
  *   },
  * });
  */
