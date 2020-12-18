@@ -1,5 +1,7 @@
 import React, { FC, useRef, useState } from "react"
 import { Animated } from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
+import Footer from "./components/Footer"
 import Header from "./components/Header"
 import Reel from "./components/Reel"
 
@@ -17,16 +19,18 @@ const Root: FC = () => {
   const [searchText, setSearchText] = useState("")
 
   return (
-    <>
+    <SafeAreaView style={{ flex: 1 }}>
       <Header
         animatedValue={animatedValue}
         searchText={searchText}
-        setAnimatedValue={setAnimatedValue}
+        onSearchModeChange={setAnimatedValue}
         setSearchText={setSearchText}
       />
 
       <Reel searchText={searchText} />
-    </>
+
+      <Footer animatedValue={animatedValue} />
+    </SafeAreaView>
   )
 }
 

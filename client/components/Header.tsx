@@ -1,26 +1,23 @@
 import { Feather } from "@expo/vector-icons"
-import React, { FC, useEffect, useRef, useState } from "react"
+import React, { FC, useEffect, useState } from "react"
 import { Animated, StyleSheet, Text, TouchableHighlight, View } from "react-native"
-import { black, blackHighlight, white } from "../colors"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { black, blackHighlight } from "../colors"
 import SearchBar from "./SearchBar"
 
-const Header: FC<Props> = ({ animatedValue, searchText, setAnimatedValue, setSearchText }) => {
+const Header: FC<Props> = ({ animatedValue, searchText, onSearchModeChange, setSearchText }) => {
   const [searchMode, setSearchMode] = useState(false)
+  const [height, setHeight] = useState(0)
+
+  const { top } = useSafeAreaInsets()
 
   useEffect(() => {
-    setAnimatedValue(searchMode)
+    onSearchModeChange(searchMode)
   }, [searchMode])
 
-  const height = useRef(0)
-
   return (
-    <View style={styles.wrapper}>
-      <View
-        style={styles.header}
-        onLayout={e => {
-          height.current = e.nativeEvent.layout.height
-        }}
-      >
+    <>
+      <View style={styles.header}>
         <Text style={styles.brand}>Dooex</Text>
 
         <TouchableHighlight
@@ -34,45 +31,56 @@ const Header: FC<Props> = ({ animatedValue, searchText, setAnimatedValue, setSea
         </TouchableHighlight>
       </View>
 
-      <Animated.View
-        style={[
-          styles.searchBarWrapper,
-          {
-            backgroundColor: white,
+      <View
+        pointerEvents="box-none"
+        style={{
+          position: "absolute",
+          top,
+          width: "100%",
+          overflow: "hidden",
+        }}
+      >
+        <Animated.View
+          onLayout={e => {
+            setHeight(e.nativeEvent.layout.height)
+          }}
+          style={{
+            paddingTop: 4,
             transform: [
               {
                 translateY: animatedValue.interpolate({
                   inputRange: [0, 1],
-                  outputRange: [0, height.current],
+                  outputRange: [-height, 0],
                 }),
               },
             ],
-          },
-        ]}
-      >
-        <SearchBar
-          searchText={searchText}
-          setSearchText={setSearchText}
-          onClose={() => {
-            setSearchMode(false)
           }}
-        />
-      </Animated.View>
-    </View>
+        >
+          <SearchBar
+            value={searchText}
+            onChange={setSearchText}
+            onClear={() => {
+              setSearchText("")
+            }}
+            onClose={() => {
+              setSearchText("")
+              setSearchMode(false)
+            }}
+          />
+        </Animated.View>
+      </View>
+    </>
   )
 }
 
 interface Props {
   animatedValue: Animated.Value
   searchText: string
-  setAnimatedValue: (searchMode: boolean) => any
+  onSearchModeChange: (searchMode: boolean) => any
   setSearchText: (searchText: string) => any
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
-    overflow: "hidden",
-  },
   header: {
     paddingHorizontal: 16,
     flexDirection: "row",
@@ -83,13 +91,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   search: {
-    paddingHorizontal: 8,
-    paddingVertical: 12,
-  },
-  searchBarWrapper: {
-    position: "absolute",
-    width: "100%",
-    bottom: "100%",
+    paddingHorizontal: 12,
+    paddingVertical: 16,
   },
 })
 

@@ -4,7 +4,7 @@ import { Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from "r
 import { black, blue, faintGray, white } from "../colors"
 import Space from "./Space"
 
-const SearchBar: FC<Props> = ({ searchText, setSearchText, onClose }) => {
+const SearchBar: FC<Props> = ({ value, onChange, onClear, onClose }) => {
   const input = createRef<TextInput>()
 
   return (
@@ -14,15 +14,15 @@ const SearchBar: FC<Props> = ({ searchText, setSearchText, onClose }) => {
           ref={input}
           placeholder="Search"
           returnKeyType="search"
-          value={searchText}
+          value={value}
           style={styles.input}
-          onChangeText={setSearchText}
+          onChangeText={onChange}
         />
 
-        {searchText.length > 0 && (
+        {value.length > 0 && (
           <TouchableOpacity
             onPress={() => {
-              setSearchText("")
+              onClear()
             }}
           >
             <Feather name="x" size={16} color={black} />
@@ -36,7 +36,6 @@ const SearchBar: FC<Props> = ({ searchText, setSearchText, onClose }) => {
         style={styles.cancelWrapper}
         onPress={() => {
           input.current?.blur()
-          setSearchText("")
           onClose()
         }}
       >
@@ -47,16 +46,16 @@ const SearchBar: FC<Props> = ({ searchText, setSearchText, onClose }) => {
 }
 
 interface Props {
-  searchText: string
-  setSearchText: (searchText: string) => any
+  value: string
+  onChange: (value: string) => any
+  onClear: () => any
   onClose: () => any
 }
 
 const styles = StyleSheet.create({
   searchBar: {
     paddingHorizontal: 16,
-    paddingTop: 8,
-    paddingBottom: 8,
+    paddingVertical: 8,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
