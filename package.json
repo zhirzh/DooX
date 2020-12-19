@@ -7,7 +7,8 @@
     "server:watch": "nodemon -e ts -w server/ -x 'yarn server'",
     "ts:codegen": "graphql-codegen -c ts-codegen.yml",
     "ts:codegen:watch": "nodemon -w ts-codegen.yml -x 'yarn ts:codegen -w'",
-    "ts:node": "node -r esm -r ts-node/register -r tsconfig-paths/register -r dotenv/config"
+    "ts:node": "node -r esm -r ts-node/register -r tsconfig-paths/register -r dotenv/config",
+    "lint": "prettier --write **/*"
   },
   "dependencies": {
     "@apollo/client": "^3.3.6",
