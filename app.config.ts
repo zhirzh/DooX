@@ -2,8 +2,8 @@ import "dotenv/config"
 import { ExpoConfig } from "@expo/config-types"
 
 const config: ExpoConfig = {
-  name: "Dooex",
-  slug: "dooex",
+  name: "Doox",
+  slug: "doox",
   version: "1.0.0",
   orientation: "portrait",
   icon: "./assets/icon.png",

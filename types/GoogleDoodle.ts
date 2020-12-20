@@ -35,13 +35,13 @@ export interface GoogleDoodle {
 }
 
 type GoogleDoodleType =
-  | "animated"
-  | "inline interactive"
-  | "interactive"
-  | "random"
-  | "simple"
-  | "slideshow"
-  | "video template"
+  | 'animated'
+  | 'inline interactive'
+  | 'interactive'
+  | 'random'
+  | 'simple'
+  | 'slideshow'
+  | 'video template'
 
 type RunDateArray = [number, number, number] // [year, month+1, date]
 

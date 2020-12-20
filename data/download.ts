@@ -1,17 +1,16 @@
-import { addMonths, eachMonthOfInterval, startOfMonth, subMonths } from "date-fns"
-import { existsSync, mkdirSync } from "fs"
-import { chunk } from "lodash"
-import fetch from "node-fetch"
-import { join } from "path"
-import { dumpDir } from "~/paths"
-import { writeJson } from "./utils"
+import { addMonths, eachMonthOfInterval, startOfMonth, subMonths } from 'date-fns'
+import { existsSync, mkdirSync } from 'fs'
+import { chunk } from 'lodash'
+import fetch from 'node-fetch'
+import { join } from 'path'
+import { dumpDir } from '~paths'
+import { firstDoodleDate } from '~shared/constants'
+import { writeJson } from './utils'
 
 const workerCount = 10
 
-const firstMonth = new Date(1998, 7) // 1998 August
-
 export default async () => {
-  console.log("download")
+  console.log('download')
 
   let shouldDownloadAll = false
   if (!existsSync(dumpDir)) {
@@ -24,7 +23,7 @@ export default async () => {
   const nextMonth = addMonths(currMonth, 1)
 
   const months = eachMonthOfInterval({
-    start: shouldDownloadAll ? firstMonth : prevMonth,
+    start: shouldDownloadAll ? firstDoodleDate : prevMonth,
     end: nextMonth,
   })
 
@@ -43,7 +42,7 @@ const downloadMonthlyDoodles = async (dates: Date[]) => {
 
   const year = date.getFullYear()
   const month = date.getMonth() + 1
-  const zeroMonth = month.toString().padStart(2, "0")
+  const zeroMonth = month.toString().padStart(2, '0')
 
   const url = `https://www.google.com/doodles/json/${year}/${zeroMonth}?full=1`
   const filename = `${year}-${zeroMonth}.json`

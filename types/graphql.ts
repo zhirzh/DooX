@@ -1,14 +1,15 @@
-import { DoodleType } from "~/types/NormalizedDoodle"
-import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from "graphql"
-import { NormalizedDoodle } from "~/types/NormalizedDoodle"
-import { gql } from "@apollo/client"
-import * as Apollo from "@apollo/client"
+import { DoodleType } from '~types/NormalizedDoodle'
+import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql'
+import { NormalizedDoodle } from '~types/NormalizedDoodle'
+import { gql } from '@apollo/client'
+import * as Apollo from '@apollo/client'
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> }
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> }
 export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } &
   { [P in K]-?: NonNullable<T[P]> }
+const defaultOptions = {}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string
@@ -17,80 +18,81 @@ export type Scalars = {
   Int: number
   Float: number
   DoodleType: DoodleType
+  Date: Date
 }
 
 export type Doodle = {
-  id: Scalars["ID"]
-  gid: Maybe<Scalars["Int"]>
-  alternate_url: Scalars["String"]
-  blog_text: Scalars["String"]
-  call_to_action_image_url: Scalars["String"]
-  collection_id: Scalars["Int"]
-  countries: Array<Scalars["String"]>
-  date: Scalars["String"]
+  id: Scalars['ID']
+  gid: Maybe<Scalars['Int']>
+  alternate_url: Scalars['String']
+  blog_text: Scalars['String']
+  call_to_action_image_url: Scalars['String']
+  collection_id: Scalars['Int']
+  countries: Array<Scalars['String']>
+  date: Scalars['String']
   doodle_args: Array<DoodleArg>
-  height: Scalars["Int"]
-  high_res_height: Scalars["Int"]
-  high_res_url: Scalars["String"]
-  high_res_width: Scalars["Int"]
+  height: Scalars['Int']
+  high_res_height: Scalars['Int']
+  high_res_url: Scalars['String']
+  high_res_width: Scalars['Int']
   history_doodles: Array<Doodle>
-  is_animated_gif: Scalars["Boolean"]
-  is_dynamic: Scalars["Boolean"]
-  is_global: Scalars["Boolean"]
-  is_highlighted: Scalars["Boolean"]
-  name: Scalars["String"]
+  is_animated_gif: Scalars['Boolean']
+  is_dynamic: Scalars['Boolean']
+  is_global: Scalars['Boolean']
+  is_highlighted: Scalars['Boolean']
+  name: Scalars['String']
   next_doodle: Maybe<Doodle>
-  persistent_id: Scalars["Int"]
+  persistent_id: Scalars['Int']
   prev_doodle: Maybe<Doodle>
-  query: Scalars["String"]
+  query: Scalars['String']
   related_doodles: Array<Doodle>
-  share_text: Scalars["String"]
-  standalone_html: Scalars["String"]
-  tags: Array<Scalars["String"]>
-  title: Scalars["String"]
+  share_text: Scalars['String']
+  standalone_html: Scalars['String']
+  tags: Array<Scalars['String']>
+  title: Scalars['String']
   translated_blog_posts: Array<TranslatedBlogPost>
   translations: Array<Translation>
-  type: Scalars["DoodleType"]
-  url: Scalars["String"]
-  width: Scalars["Int"]
-  youtube_id: Scalars["String"]
+  type: Scalars['DoodleType']
+  url: Scalars['String']
+  width: Scalars['Int']
+  youtube_id: Scalars['String']
 }
 
 export type DoodleArg = {
-  name: Scalars["String"]
-  value: Scalars["String"]
+  name: Scalars['String']
+  value: Scalars['String']
 }
 
 export type Translation = {
-  _key: Scalars["String"]
+  _key: Scalars['String']
   _value: _Translation
 }
 
 export type _Translation = {
-  share_text: Scalars["String"]
-  hover_text: Maybe<Scalars["String"]>
-  query: Maybe<Scalars["String"]>
+  share_text: Scalars['String']
+  hover_text: Maybe<Scalars['String']>
+  query: Maybe<Scalars['String']>
 }
 
 export type TranslatedBlogPost = {
-  _key: Scalars["String"]
+  _key: Scalars['String']
   _value: _TranslatedBlogPost
 }
 
 export type _TranslatedBlogPost = {
-  blog_post: Scalars["String"]
-  language: Scalars["String"]
+  blog_post: Scalars['String']
+  language: Scalars['String']
 }
 
 export enum QueryOrder {
-  Latest = "Latest",
-  Oldest = "Oldest",
+  Latest = 'Latest',
+  Oldest = 'Oldest',
 }
 
 export type Filters = {
-  types: Array<Scalars["String"]>
-  countries: Array<Scalars["String"]>
-  tags: Array<Scalars["String"]>
+  types: Array<Scalars['DoodleType']>
+  countries: Array<Scalars['String']>
+  tags: Array<Scalars['String']>
 }
 
 export type Query = {
@@ -100,18 +102,20 @@ export type Query = {
 }
 
 export type QueryHistoryDoodlesArgs = {
-  month: Scalars["Int"]
-  day: Scalars["Int"]
+  month: Scalars['Int']
+  day: Scalars['Int']
 }
 
 export type QueryDoodlesArgs = {
-  limit: Maybe<Scalars["Int"]>
-  offset: Maybe<Scalars["Int"]>
+  limit: Maybe<Scalars['Int']>
+  offset: Maybe<Scalars['Int']>
   order: Maybe<QueryOrder>
-  searchText: Maybe<Scalars["String"]>
-  type: Maybe<Scalars["String"]>
-  countries: Maybe<Array<Scalars["String"]>>
-  tags: Maybe<Array<Scalars["String"]>>
+  searchText: Maybe<Scalars['String']>
+  type: Maybe<Scalars['String']>
+  countries: Maybe<Array<Scalars['String']>>
+  tags: Maybe<Array<Scalars['String']>>
+  startDate: Maybe<Scalars['String']>
+  endDate: Maybe<Scalars['String']>
 }
 
 export type ResolverTypeWrapper<T> = Promise<T> | T
@@ -207,17 +211,18 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  DoodleType: ResolverTypeWrapper<Scalars["DoodleType"]>
+  DoodleType: ResolverTypeWrapper<Scalars['DoodleType']>
   Doodle: ResolverTypeWrapper<NormalizedDoodle>
-  ID: ResolverTypeWrapper<Scalars["ID"]>
-  Int: ResolverTypeWrapper<Scalars["Int"]>
-  String: ResolverTypeWrapper<Scalars["String"]>
-  Boolean: ResolverTypeWrapper<Scalars["Boolean"]>
+  ID: ResolverTypeWrapper<Scalars['ID']>
+  Int: ResolverTypeWrapper<Scalars['Int']>
+  String: ResolverTypeWrapper<Scalars['String']>
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']>
   DoodleArg: ResolverTypeWrapper<DoodleArg>
   Translation: ResolverTypeWrapper<Translation>
   _Translation: ResolverTypeWrapper<_Translation>
   TranslatedBlogPost: ResolverTypeWrapper<TranslatedBlogPost>
   _TranslatedBlogPost: ResolverTypeWrapper<_TranslatedBlogPost>
+  Date: ResolverTypeWrapper<Scalars['Date']>
   QueryOrder: QueryOrder
   Filters: ResolverTypeWrapper<Filters>
   Query: ResolverTypeWrapper<{}>
@@ -225,140 +230,145 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  DoodleType: Scalars["DoodleType"]
+  DoodleType: Scalars['DoodleType']
   Doodle: NormalizedDoodle
-  ID: Scalars["ID"]
-  Int: Scalars["Int"]
-  String: Scalars["String"]
-  Boolean: Scalars["Boolean"]
+  ID: Scalars['ID']
+  Int: Scalars['Int']
+  String: Scalars['String']
+  Boolean: Scalars['Boolean']
   DoodleArg: DoodleArg
   Translation: Translation
   _Translation: _Translation
   TranslatedBlogPost: TranslatedBlogPost
   _TranslatedBlogPost: _TranslatedBlogPost
+  Date: Scalars['Date']
   Filters: Filters
   Query: {}
 }
 
 export interface DoodleTypeScalarConfig
-  extends GraphQLScalarTypeConfig<ResolversTypes["DoodleType"], any> {
-  name: "DoodleType"
+  extends GraphQLScalarTypeConfig<ResolversTypes['DoodleType'], any> {
+  name: 'DoodleType'
 }
 
 export type DoodleResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes["Doodle"] = ResolversParentTypes["Doodle"]
+  ParentType extends ResolversParentTypes['Doodle'] = ResolversParentTypes['Doodle']
 > = {
-  id: Resolver<ResolversTypes["ID"], ParentType, ContextType>
-  gid: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>
-  alternate_url: Resolver<ResolversTypes["String"], ParentType, ContextType>
-  blog_text: Resolver<ResolversTypes["String"], ParentType, ContextType>
-  call_to_action_image_url: Resolver<ResolversTypes["String"], ParentType, ContextType>
-  collection_id: Resolver<ResolversTypes["Int"], ParentType, ContextType>
-  countries: Resolver<Array<ResolversTypes["String"]>, ParentType, ContextType>
-  date: Resolver<ResolversTypes["String"], ParentType, ContextType>
-  doodle_args: Resolver<Array<ResolversTypes["DoodleArg"]>, ParentType, ContextType>
-  height: Resolver<ResolversTypes["Int"], ParentType, ContextType>
-  high_res_height: Resolver<ResolversTypes["Int"], ParentType, ContextType>
-  high_res_url: Resolver<ResolversTypes["String"], ParentType, ContextType>
-  high_res_width: Resolver<ResolversTypes["Int"], ParentType, ContextType>
-  history_doodles: Resolver<Array<ResolversTypes["Doodle"]>, ParentType, ContextType>
-  is_animated_gif: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>
-  is_dynamic: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>
-  is_global: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>
-  is_highlighted: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>
-  name: Resolver<ResolversTypes["String"], ParentType, ContextType>
-  next_doodle: Resolver<Maybe<ResolversTypes["Doodle"]>, ParentType, ContextType>
-  persistent_id: Resolver<ResolversTypes["Int"], ParentType, ContextType>
-  prev_doodle: Resolver<Maybe<ResolversTypes["Doodle"]>, ParentType, ContextType>
-  query: Resolver<ResolversTypes["String"], ParentType, ContextType>
-  related_doodles: Resolver<Array<ResolversTypes["Doodle"]>, ParentType, ContextType>
-  share_text: Resolver<ResolversTypes["String"], ParentType, ContextType>
-  standalone_html: Resolver<ResolversTypes["String"], ParentType, ContextType>
-  tags: Resolver<Array<ResolversTypes["String"]>, ParentType, ContextType>
-  title: Resolver<ResolversTypes["String"], ParentType, ContextType>
+  id: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+  gid: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
+  alternate_url: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  blog_text: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  call_to_action_image_url: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  collection_id: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  countries: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>
+  date: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  doodle_args: Resolver<Array<ResolversTypes['DoodleArg']>, ParentType, ContextType>
+  height: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  high_res_height: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  high_res_url: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  high_res_width: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  history_doodles: Resolver<Array<ResolversTypes['Doodle']>, ParentType, ContextType>
+  is_animated_gif: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
+  is_dynamic: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
+  is_global: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
+  is_highlighted: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
+  name: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  next_doodle: Resolver<Maybe<ResolversTypes['Doodle']>, ParentType, ContextType>
+  persistent_id: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  prev_doodle: Resolver<Maybe<ResolversTypes['Doodle']>, ParentType, ContextType>
+  query: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  related_doodles: Resolver<Array<ResolversTypes['Doodle']>, ParentType, ContextType>
+  share_text: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  standalone_html: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  tags: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>
+  title: Resolver<ResolversTypes['String'], ParentType, ContextType>
   translated_blog_posts: Resolver<
-    Array<ResolversTypes["TranslatedBlogPost"]>,
+    Array<ResolversTypes['TranslatedBlogPost']>,
     ParentType,
     ContextType
   >
-  translations: Resolver<Array<ResolversTypes["Translation"]>, ParentType, ContextType>
-  type: Resolver<ResolversTypes["DoodleType"], ParentType, ContextType>
-  url: Resolver<ResolversTypes["String"], ParentType, ContextType>
-  width: Resolver<ResolversTypes["Int"], ParentType, ContextType>
-  youtube_id: Resolver<ResolversTypes["String"], ParentType, ContextType>
+  translations: Resolver<Array<ResolversTypes['Translation']>, ParentType, ContextType>
+  type: Resolver<ResolversTypes['DoodleType'], ParentType, ContextType>
+  url: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  width: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  youtube_id: Resolver<ResolversTypes['String'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type DoodleArgResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes["DoodleArg"] = ResolversParentTypes["DoodleArg"]
+  ParentType extends ResolversParentTypes['DoodleArg'] = ResolversParentTypes['DoodleArg']
 > = {
-  name: Resolver<ResolversTypes["String"], ParentType, ContextType>
-  value: Resolver<ResolversTypes["String"], ParentType, ContextType>
+  name: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  value: Resolver<ResolversTypes['String'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type TranslationResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes["Translation"] = ResolversParentTypes["Translation"]
+  ParentType extends ResolversParentTypes['Translation'] = ResolversParentTypes['Translation']
 > = {
-  _key: Resolver<ResolversTypes["String"], ParentType, ContextType>
-  _value: Resolver<ResolversTypes["_Translation"], ParentType, ContextType>
+  _key: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  _value: Resolver<ResolversTypes['_Translation'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type _TranslationResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes["_Translation"] = ResolversParentTypes["_Translation"]
+  ParentType extends ResolversParentTypes['_Translation'] = ResolversParentTypes['_Translation']
 > = {
-  share_text: Resolver<ResolversTypes["String"], ParentType, ContextType>
-  hover_text: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>
-  query: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>
+  share_text: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  hover_text: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  query: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type TranslatedBlogPostResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes["TranslatedBlogPost"] = ResolversParentTypes["TranslatedBlogPost"]
+  ParentType extends ResolversParentTypes['TranslatedBlogPost'] = ResolversParentTypes['TranslatedBlogPost']
 > = {
-  _key: Resolver<ResolversTypes["String"], ParentType, ContextType>
-  _value: Resolver<ResolversTypes["_TranslatedBlogPost"], ParentType, ContextType>
+  _key: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  _value: Resolver<ResolversTypes['_TranslatedBlogPost'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type _TranslatedBlogPostResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes["_TranslatedBlogPost"] = ResolversParentTypes["_TranslatedBlogPost"]
+  ParentType extends ResolversParentTypes['_TranslatedBlogPost'] = ResolversParentTypes['_TranslatedBlogPost']
 > = {
-  blog_post: Resolver<ResolversTypes["String"], ParentType, ContextType>
-  language: Resolver<ResolversTypes["String"], ParentType, ContextType>
+  blog_post: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  language: Resolver<ResolversTypes['String'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
+  name: 'Date'
 }
 
 export type FiltersResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes["Filters"] = ResolversParentTypes["Filters"]
+  ParentType extends ResolversParentTypes['Filters'] = ResolversParentTypes['Filters']
 > = {
-  types: Resolver<Array<ResolversTypes["String"]>, ParentType, ContextType>
-  countries: Resolver<Array<ResolversTypes["String"]>, ParentType, ContextType>
-  tags: Resolver<Array<ResolversTypes["String"]>, ParentType, ContextType>
+  types: Resolver<Array<ResolversTypes['DoodleType']>, ParentType, ContextType>
+  countries: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>
+  tags: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type QueryResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes["Query"] = ResolversParentTypes["Query"]
+  ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
 > = {
-  filters: Resolver<ResolversTypes["Filters"], ParentType, ContextType>
+  filters: Resolver<ResolversTypes['Filters'], ParentType, ContextType>
   historyDoodles: Resolver<
-    Array<ResolversTypes["Doodle"]>,
+    Array<ResolversTypes['Doodle']>,
     ParentType,
     ContextType,
-    RequireFields<QueryHistoryDoodlesArgs, "month" | "day">
+    RequireFields<QueryHistoryDoodlesArgs, 'month' | 'day'>
   >
   doodles: Resolver<
-    Array<ResolversTypes["Doodle"]>,
+    Array<ResolversTypes['Doodle']>,
     ParentType,
     ContextType,
     RequireFields<QueryDoodlesArgs, never>
@@ -373,6 +383,7 @@ export type Resolvers<ContextType = any> = {
   _Translation: _TranslationResolvers<ContextType>
   TranslatedBlogPost: TranslatedBlogPostResolvers<ContextType>
   _TranslatedBlogPost: _TranslatedBlogPostResolvers<ContextType>
+  Date: GraphQLScalarType
   Filters: FiltersResolvers<ContextType>
   Query: QueryResolvers<ContextType>
 }
@@ -384,22 +395,48 @@ export type Resolvers<ContextType = any> = {
 export type IResolvers<ContextType = any> = Resolvers<ContextType>
 
 export type DoodlesQueryVariables = Exact<{
-  offset: Maybe<Scalars["Int"]>
-  searchText: Maybe<Scalars["String"]>
+  offset: Maybe<Scalars['Int']>
+  searchText: Maybe<Scalars['String']>
+  type: Maybe<Scalars['String']>
+  countries: Maybe<Array<Scalars['String']> | Scalars['String']>
+  tags: Maybe<Array<Scalars['String']> | Scalars['String']>
+  startDate: Maybe<Scalars['String']>
+  endDate: Maybe<Scalars['String']>
 }>
 
-export type DoodlesQuery = { doodles: Array<Pick<Doodle, "id" | "title" | "url">> }
+export type DoodlesQuery = { doodles: Array<Pick<Doodle, 'id' | 'title' | 'url'>> }
 
 export type HistoryDoodlesQueryVariables = Exact<{
-  month: Scalars["Int"]
-  day: Scalars["Int"]
+  month: Scalars['Int']
+  day: Scalars['Int']
 }>
 
-export type HistoryDoodlesQuery = { historyDoodles: Array<Pick<Doodle, "id" | "title" | "url">> }
+export type HistoryDoodlesQuery = { historyDoodles: Array<Pick<Doodle, 'id' | 'title' | 'url'>> }
+
+export type FiltersQueryVariables = Exact<{ [key: string]: never }>
+
+export type FiltersQuery = { filters: Pick<Filters, 'types' | 'countries' | 'tags'> }
 
 export const DoodlesDocument = gql`
-  query doodles($offset: Int, $searchText: String) {
-    doodles(limit: 4, offset: $offset, searchText: $searchText) {
+  query doodles(
+    $offset: Int
+    $searchText: String
+    $type: String
+    $countries: [String!]
+    $tags: [String!]
+    $startDate: String
+    $endDate: String
+  ) {
+    doodles(
+      limit: 4
+      offset: $offset
+      searchText: $searchText
+      type: $type
+      countries: $countries
+      tags: $tags
+      startDate: $startDate
+      endDate: $endDate
+    ) {
       id
       title
       url
@@ -421,18 +458,25 @@ export const DoodlesDocument = gql`
  *   variables: {
  *      offset: // value for 'offset'
  *      searchText: // value for 'searchText'
+ *      type: // value for 'type'
+ *      countries: // value for 'countries'
+ *      tags: // value for 'tags'
+ *      startDate: // value for 'startDate'
+ *      endDate: // value for 'endDate'
  *   },
  * });
  */
 export function useDoodlesQuery(
   baseOptions?: Apollo.QueryHookOptions<DoodlesQuery, DoodlesQueryVariables>
 ) {
-  return Apollo.useQuery<DoodlesQuery, DoodlesQueryVariables>(DoodlesDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<DoodlesQuery, DoodlesQueryVariables>(DoodlesDocument, options)
 }
 export function useDoodlesLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<DoodlesQuery, DoodlesQueryVariables>
 ) {
-  return Apollo.useLazyQuery<DoodlesQuery, DoodlesQueryVariables>(DoodlesDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<DoodlesQuery, DoodlesQueryVariables>(DoodlesDocument, options)
 }
 export type DoodlesQueryHookResult = ReturnType<typeof useDoodlesQuery>
 export type DoodlesLazyQueryHookResult = ReturnType<typeof useDoodlesLazyQuery>
@@ -467,17 +511,19 @@ export const HistoryDoodlesDocument = gql`
 export function useHistoryDoodlesQuery(
   baseOptions: Apollo.QueryHookOptions<HistoryDoodlesQuery, HistoryDoodlesQueryVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useQuery<HistoryDoodlesQuery, HistoryDoodlesQueryVariables>(
     HistoryDoodlesDocument,
-    baseOptions
+    options
   )
 }
 export function useHistoryDoodlesLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<HistoryDoodlesQuery, HistoryDoodlesQueryVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useLazyQuery<HistoryDoodlesQuery, HistoryDoodlesQueryVariables>(
     HistoryDoodlesDocument,
-    baseOptions
+    options
   )
 }
 export type HistoryDoodlesQueryHookResult = ReturnType<typeof useHistoryDoodlesQuery>
@@ -486,3 +532,43 @@ export type HistoryDoodlesQueryResult = Apollo.QueryResult<
   HistoryDoodlesQuery,
   HistoryDoodlesQueryVariables
 >
+export const FiltersDocument = gql`
+  query filters {
+    filters {
+      types
+      countries
+      tags
+    }
+  }
+`
+
+/**
+ * __useFiltersQuery__
+ *
+ * To run a query within a React component, call `useFiltersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFiltersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFiltersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useFiltersQuery(
+  baseOptions?: Apollo.QueryHookOptions<FiltersQuery, FiltersQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<FiltersQuery, FiltersQueryVariables>(FiltersDocument, options)
+}
+export function useFiltersLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<FiltersQuery, FiltersQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<FiltersQuery, FiltersQueryVariables>(FiltersDocument, options)
+}
+export type FiltersQueryHookResult = ReturnType<typeof useFiltersQuery>
+export type FiltersLazyQueryHookResult = ReturnType<typeof useFiltersLazyQuery>
+export type FiltersQueryResult = Apollo.QueryResult<FiltersQuery, FiltersQueryVariables>

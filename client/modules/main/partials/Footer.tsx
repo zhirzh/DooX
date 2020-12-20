@@ -1,11 +1,11 @@
-import { Feather, MaterialIcons } from "@expo/vector-icons"
-import React, { FC, useState } from "react"
-import { Animated, StyleSheet, Text, TouchableOpacity, View } from "react-native"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { blue, white } from "../colors"
-import Separator from "./Separator"
+import { Feather, MaterialIcons } from '@expo/vector-icons'
+import React, { FC, useState } from 'react'
+import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { blue, white } from '~client/colors'
+import Separator from '~client/components/Separator'
 
-const Footer: FC<Props> = ({ animatedValue }) => {
+const Footer: FC<Props> = ({ animatedValue, openFilters }) => {
   const [height, setHeight] = useState(0)
 
   const { bottom } = useSafeAreaInsets()
@@ -37,8 +37,8 @@ const Footer: FC<Props> = ({ animatedValue }) => {
               alert()
             }}
           >
-            <Feather name="filter" size={24} color={blue} />
-            <Text style={{ color: blue, fontSize: 12 }}>Sort</Text>
+            <MaterialIcons name="sort" size={24} color={blue} />
+            <Text style={{ color: blue, fontSize: 14 }}>Sort</Text>
           </TouchableOpacity>
 
           <Separator vertical />
@@ -46,11 +46,11 @@ const Footer: FC<Props> = ({ animatedValue }) => {
           <TouchableOpacity
             style={styles.action}
             onPress={() => {
-              alert()
+              openFilters()
             }}
           >
-            <MaterialIcons name="sort" size={24} color={blue} />
-            <Text style={{ color: blue, fontSize: 12 }}>Filter</Text>
+            <Feather name="filter" size={20} color={blue} />
+            <Text style={{ color: blue, fontSize: 14 }}>Filter</Text>
           </TouchableOpacity>
         </View>
       </Animated.View>
@@ -60,22 +60,24 @@ const Footer: FC<Props> = ({ animatedValue }) => {
 
 interface Props {
   animatedValue: Animated.Value
+  openFilters: () => any
 }
 
 const styles = StyleSheet.create({
   wrapper: {
-    position: "absolute",
-    width: "100%",
-    overflow: "hidden",
+    position: 'absolute',
+    width: '100%',
+    overflow: 'hidden',
   },
   footer: {
-    flexDirection: "row",
-    paddingTop: 8,
-    paddingBottom: 4,
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    paddingTop: 4,
+    paddingBottom: 8,
   },
   action: {
     flexGrow: 1,
-    alignItems: "center",
+    alignItems: 'center',
   },
 })
 

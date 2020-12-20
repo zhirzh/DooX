@@ -1,4 +1,4 @@
-# Overriden with "DoodleType" in "~/types/NormalizedDoodle.ts"
+# Overriden with "DoodleType" in "~types/NormalizedDoodle.ts"
 scalar DoodleType
 
 type Doodle {

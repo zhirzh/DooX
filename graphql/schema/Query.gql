@@ -1,10 +1,12 @@
+scalar Date
+
 enum QueryOrder {
   Latest
   Oldest
 }
 
 type Filters {
-  types: [String!]!
+  types: [DoodleType!]!
   countries: [String!]!
   tags: [String!]!
 }
@@ -24,5 +26,8 @@ type Query {
     type: String
     countries: [String!]
     tags: [String!]
+
+    startDate: String # YYYY-MM-DD
+    endDate: String # YYYY-MM-DD
   ): [Doodle!]!
 }

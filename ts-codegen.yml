@@ -16,10 +16,10 @@ generates:
 
       scalars:
         Date: Date
-        DoodleType: ~/types/NormalizedDoodle#DoodleType
+        DoodleType: ~types/NormalizedDoodle#DoodleType
 
       mappers:
-        Doodle: ~/types/NormalizedDoodle#NormalizedDoodle
+        Doodle: ~types/NormalizedDoodle#NormalizedDoodle
 
 require:
   - ts-node/register

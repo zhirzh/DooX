@@ -1,5 +1,25 @@
-query doodles($offset: Int, $searchText: String) {
-  doodles(limit: 4, offset: $offset, searchText: $searchText) {
+query doodles(
+  $offset: Int
+  $searchText: String
+  $type: String
+  $countries: [String!]
+  $tags: [String!]
+  $startDate: String
+  $endDate: String
+) {
+  doodles(
+    limit: 4
+    offset: $offset
+
+    searchText: $searchText
+
+    type: $type
+    countries: $countries
+    tags: $tags
+
+    startDate: $startDate
+    endDate: $endDate
+  ) {
     id
     title
     url
@@ -11,5 +31,13 @@ query historyDoodles($month: Int!, $day: Int!) {
     id
     title
     url
+  }
+}
+
+query filters {
+  filters {
+    types
+    countries
+    tags
   }
 }

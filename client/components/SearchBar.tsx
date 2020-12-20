@@ -1,10 +1,10 @@
-import { Feather } from "@expo/vector-icons"
-import React, { createRef, FC } from "react"
-import { Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
-import { black, blue, faintGray, white } from "../colors"
-import Space from "./Space"
+import { Feather } from '@expo/vector-icons'
+import React, { createRef, FC } from 'react'
+import { Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { black, blue, faintGray, white } from '~/client/colors'
+import Space from './Space'
 
-const SearchBar: FC<Props> = ({ value, onChange, onClear, onClose }) => {
+const SearchBar: FC<Props> = ({ placeholder, value, onChange, onClear, onClose }) => {
   const input = createRef<TextInput>()
 
   return (
@@ -12,7 +12,7 @@ const SearchBar: FC<Props> = ({ value, onChange, onClear, onClose }) => {
       <View style={[styles.inputWrapper, { backgroundColor: faintGray }]}>
         <TextInput
           ref={input}
-          placeholder="Search"
+          placeholder={placeholder}
           returnKeyType="search"
           value={value}
           style={styles.input}
@@ -25,7 +25,7 @@ const SearchBar: FC<Props> = ({ value, onChange, onClear, onClose }) => {
               onClear()
             }}
           >
-            <Feather name="x" size={16} color={black} />
+            <Feather name="x" size={16} color={black} style={styles.actionWrapper} />
           </TouchableOpacity>
         )}
       </View>
@@ -33,7 +33,7 @@ const SearchBar: FC<Props> = ({ value, onChange, onClear, onClose }) => {
       <Space width={8} />
 
       <TouchableOpacity
-        style={styles.cancelWrapper}
+        style={styles.actionWrapper}
         onPress={() => {
           input.current?.blur()
           onClose()
@@ -46,6 +46,7 @@ const SearchBar: FC<Props> = ({ value, onChange, onClear, onClose }) => {
 }
 
 interface Props {
+  placeholder: string
   value: string
   onChange: (value: string) => any
   onClear: () => any
@@ -56,25 +57,25 @@ const styles = StyleSheet.create({
   searchBar: {
     paddingHorizontal: 16,
     paddingVertical: 8,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   inputWrapper: {
     paddingStart: 12,
-    paddingEnd: 8,
+    paddingEnd: 4,
     paddingVertical: 2 + Platform.select({ ios: 4, default: 0 }),
     flexGrow: 1,
     flexShrink: 1,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     borderRadius: 12,
   },
   input: {
     flexGrow: 1,
     fontSize: 16,
   },
-  cancelWrapper: {
+  actionWrapper: {
     padding: 4,
   },
 })

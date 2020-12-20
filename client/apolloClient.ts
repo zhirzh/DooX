@@ -1,6 +1,6 @@
-import { ApolloClient, InMemoryCache } from "@apollo/client"
-import { offsetLimitPagination } from "@apollo/client/utilities"
-import Constants from "expo-constants"
+import { ApolloClient, InMemoryCache } from '@apollo/client'
+import { offsetLimitPagination } from '@apollo/client/utilities'
+import Constants from 'expo-constants'
 
 const { ip, port } = Constants.manifest.extra
 
@@ -11,7 +11,14 @@ const createApolloClient = () =>
       typePolicies: {
         Query: {
           fields: {
-            doodles: offsetLimitPagination(["searchText"]),
+            doodles: offsetLimitPagination([
+              'searchText',
+              'type',
+              'countries',
+              'tags',
+              'startDate',
+              'endDate',
+            ]),
           },
         },
       },

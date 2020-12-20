@@ -1,6 +1,6 @@
-import React, { FC, useState } from "react"
-import { Image, StyleSheet, Text, View } from "react-native"
-import { faintGray } from "../colors"
+import React, { FC, useState } from 'react'
+import { Image, StyleSheet, Text, View } from 'react-native'
+import { faintGray } from '../../../colors'
 
 const size = 64
 const captionSpace = 24
@@ -34,14 +34,14 @@ interface Props {
 
 const styles = StyleSheet.create({
   wrapper: {
-    alignItems: "center",
+    alignItems: 'center',
     width: size + captionSpace,
   },
   circle: {
     width: size,
     aspectRatio: 1,
     borderRadius: size,
-    overflow: "hidden",
+    overflow: 'hidden',
     borderWidth: 1,
   },
   caption: {
@@ -49,8 +49,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   image: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
   },
 })
 

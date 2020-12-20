@@ -1,13 +1,20 @@
-import { Feather } from "@expo/vector-icons"
-import React, { FC, useEffect, useState } from "react"
-import { Animated, StyleSheet, Text, TouchableHighlight, View } from "react-native"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { black, blackHighlight } from "../colors"
-import SearchBar from "./SearchBar"
+import { Feather } from '@expo/vector-icons'
+import React, { FC, useEffect, useState } from 'react'
+import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useDispatch, useSelector } from 'react-redux'
+import { black } from '~client/colors'
+import SearchBar from '~client/components/SearchBar'
+import { StoreState } from '~client/store'
+import { resetSearchText, setSearchText } from '~client/store/filters'
 
-const Header: FC<Props> = ({ animatedValue, searchText, onSearchModeChange, setSearchText }) => {
+const Header: FC<Props> = ({ animatedValue, onSearchModeChange }) => {
   const [searchMode, setSearchMode] = useState(false)
   const [height, setHeight] = useState(0)
+
+  const searchText = useSelector((state: StoreState) => state.filters.searchText)
+
+  const dispatch = useDispatch()
 
   const { top } = useSafeAreaInsets()
 
@@ -18,26 +25,25 @@ const Header: FC<Props> = ({ animatedValue, searchText, onSearchModeChange, setS
   return (
     <>
       <View style={styles.header}>
-        <Text style={styles.brand}>Dooex</Text>
+        <Text style={styles.brand}>Doox</Text>
 
-        <TouchableHighlight
-          underlayColor={blackHighlight}
+        <TouchableOpacity
           style={styles.search}
           onPress={() => {
             setSearchMode(true)
           }}
         >
           <Feather name="search" size={20} color={black} />
-        </TouchableHighlight>
+        </TouchableOpacity>
       </View>
 
       <View
         pointerEvents="box-none"
         style={{
-          position: "absolute",
+          position: 'absolute',
           top,
-          width: "100%",
-          overflow: "hidden",
+          width: '100%',
+          overflow: 'hidden',
         }}
       >
         <Animated.View
@@ -57,13 +63,16 @@ const Header: FC<Props> = ({ animatedValue, searchText, onSearchModeChange, setS
           }}
         >
           <SearchBar
+            placeholder="Search doodles"
             value={searchText}
-            onChange={setSearchText}
+            onChange={searchText => {
+              dispatch(setSearchText(searchText))
+            }}
             onClear={() => {
-              setSearchText("")
+              dispatch(resetSearchText())
             }}
             onClose={() => {
-              setSearchText("")
+              dispatch(resetSearchText())
               setSearchMode(false)
             }}
           />
@@ -75,17 +84,15 @@ const Header: FC<Props> = ({ animatedValue, searchText, onSearchModeChange, setS
 
 interface Props {
   animatedValue: Animated.Value
-  searchText: string
   onSearchModeChange: (searchMode: boolean) => any
-  setSearchText: (searchText: string) => any
 }
 
 const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 16,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   brand: {
     fontSize: 20,

@@ -14,3 +14,5 @@ export const normalizeSimpleMap = <T>(x: Record<string, T>) =>
  */
 export const denormalizeIntoSimpleMap = <T>(x: Array<{ _key: string; _value: T }>) =>
   Object.fromEntries(x.map(y => [y._key, y._value]))
+
+export const delay = (ms: number = 5000) => new Promise(res => setTimeout(res, ms))

@@ -1,7 +1,7 @@
-import { ApolloServerPlugin, GraphQLRequestListener } from "apollo-server-plugin-base"
-import { GraphQLRequestContext, Logger } from "apollo-server-types"
-import { stripIgnoredCharacters } from "graphql"
-import { v4 as uuid } from "uuid"
+import { ApolloServerPlugin, GraphQLRequestListener } from 'apollo-server-plugin-base'
+import { GraphQLRequestContext, Logger } from 'apollo-server-types'
+import { stripIgnoredCharacters } from 'graphql'
+import { v4 as uuid } from 'uuid'
 
 export const consoleLogger: Logger = {
   debug: msg => console.debug(`DEBUG ${new Date().toISOString()} ${msg}`),
@@ -16,7 +16,7 @@ export default class LoggerPlugin implements ApolloServerPlugin {
   requestDidStart({ logger, request }: GraphQLRequestContext) {
     const { query, variables } = request
 
-    if (!query || query.startsWith("query IntrospectionQuery")) {
+    if (!query || query.startsWith('query IntrospectionQuery')) {
       return
     }
 

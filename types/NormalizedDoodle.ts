@@ -1,7 +1,7 @@
-import { GoogleDoodle } from "./GoogleDoodle"
+import { GoogleDoodle } from './GoogleDoodle'
 
 export interface NormalizedDoodle extends Omit<GoogleDoodle, OmitKey | OverrideKey> {
-  gid: GoogleDoodle["id"]
+  gid: GoogleDoodle['id']
   type: DoodleType
   date: string // ISO datestamp
 
@@ -14,13 +14,13 @@ export interface NormalizedDoodle extends Omit<GoogleDoodle, OmitKey | OverrideK
 
 export type DoodleId = string
 
-export type DoodleType = "simple" | "interactive" | "slideshow" | "video"
+export type DoodleType = 'Simple' | 'Interactive' | 'Slideshow' | 'Video'
 
-export type OmitKey = "doodle_type" | "run_date_array"
+export type OmitKey = 'doodle_type' | 'run_date_array'
 
 export type OverrideKey =
-  | "id"
-  | "history_doodles"
-  | "next_doodle"
-  | "prev_doodle"
-  | "related_doodles"
+  | 'id'
+  | 'history_doodles'
+  | 'next_doodle'
+  | 'prev_doodle'
+  | 'related_doodles'
