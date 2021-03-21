@@ -1,14 +1,18 @@
 import { Feather, MaterialIcons } from '@expo/vector-icons'
+import { NavigationProp, useNavigation } from '@react-navigation/native'
 import React, { FC, useState } from 'react'
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { blue, white } from '~client/colors'
 import Separator from '~client/components/Separator'
+import { Routes } from '~client/navigation/Routes'
 
-const Footer: FC<Props> = ({ animatedValue, openFilters }) => {
+const Footer: FC<Props> = ({ animatedValue }) => {
   const [height, setHeight] = useState(0)
 
   const { bottom } = useSafeAreaInsets()
+
+  const { navigate } = useNavigation<NavigationProp<Routes>>()
 
   return (
     <View pointerEvents="box-none" style={[styles.wrapper, { bottom }]}>
@@ -46,7 +50,7 @@ const Footer: FC<Props> = ({ animatedValue, openFilters }) => {
           <TouchableOpacity
             style={styles.action}
             onPress={() => {
-              openFilters()
+              navigate('Filters')
             }}
           >
             <Feather name="filter" size={20} color={blue} />
@@ -60,7 +64,6 @@ const Footer: FC<Props> = ({ animatedValue, openFilters }) => {
 
 interface Props {
   animatedValue: Animated.Value
-  openFilters: () => any
 }
 
 const styles = StyleSheet.create({

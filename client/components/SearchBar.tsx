@@ -4,7 +4,7 @@ import { Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'r
 import { black, blue, faintGray, white } from '~/client/colors'
 import Space from './Space'
 
-const SearchBar: FC<Props> = ({ placeholder, value, onChange, onClear, onClose }) => {
+const SearchBar: FC<Props> = ({ placeholder, action, value, onChange, onClear, onClose }) => {
   const input = createRef<TextInput>()
 
   return (
@@ -39,7 +39,7 @@ const SearchBar: FC<Props> = ({ placeholder, value, onChange, onClear, onClose }
           onClose()
         }}
       >
-        <Text style={{ color: blue }}>Cancel</Text>
+        <Text style={{ color: blue }}>{action}</Text>
       </TouchableOpacity>
     </View>
   )
@@ -47,6 +47,7 @@ const SearchBar: FC<Props> = ({ placeholder, value, onChange, onClear, onClose }
 
 interface Props {
   placeholder: string
+  action: string
   value: string
   onChange: (value: string) => any
   onClear: () => any
@@ -64,7 +65,6 @@ const styles = StyleSheet.create({
   inputWrapper: {
     paddingStart: 12,
     paddingEnd: 4,
-    paddingVertical: 2 + Platform.select({ ios: 4, default: 0 }),
     flexGrow: 1,
     flexShrink: 1,
     flexDirection: 'row',
@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   input: {
+    paddingVertical: 4 + Platform.select({ ios: 4, default: 0 }),
     flexGrow: 1,
     fontSize: 16,
   },

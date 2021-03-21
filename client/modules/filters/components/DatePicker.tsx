@@ -1,10 +1,9 @@
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { format } from 'date-fns/esm'
 import React, { FC, useState } from 'react'
-import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Modal, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { blue, darkGray, white } from '~client/colors'
 import Space from '~client/components/Space'
-import Modal from '~client/modals/Modal'
 
 const DatePicker: FC<Props> = ({ label, value, minDate, maxDate, onSelect }) => {
   const [visible, setVisible] = useState(false)
@@ -42,8 +41,9 @@ const DatePicker: FC<Props> = ({ label, value, minDate, maxDate, onSelect }) => 
 
       {Platform.OS === 'ios' && (
         <Modal
+          transparent
           visible={visible}
-          onClose={() => {
+          onRequestClose={() => {
             setVisible(false)
           }}
         >

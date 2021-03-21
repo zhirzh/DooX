@@ -2,17 +2,16 @@ import { Feather } from '@expo/vector-icons'
 import React, { FC, useEffect, useState } from 'react'
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { black } from '~client/colors'
 import SearchBar from '~client/components/SearchBar'
-import { StoreState } from '~client/store'
-import { resetSearchText, setSearchText } from '~client/store/filters'
+import { resetFilters, resetSearchText, setSearchText, useFilters } from '~client/store/filters'
 
 const Header: FC<Props> = ({ animatedValue, onSearchModeChange }) => {
   const [searchMode, setSearchMode] = useState(false)
   const [height, setHeight] = useState(0)
 
-  const searchText = useSelector((state: StoreState) => state.filters.searchText)
+  const { searchText } = useFilters()
 
   const dispatch = useDispatch()
 
@@ -64,6 +63,7 @@ const Header: FC<Props> = ({ animatedValue, onSearchModeChange }) => {
         >
           <SearchBar
             placeholder="Search doodles"
+            action="Cancel"
             value={searchText}
             onChange={searchText => {
               dispatch(setSearchText(searchText))
@@ -72,7 +72,7 @@ const Header: FC<Props> = ({ animatedValue, onSearchModeChange }) => {
               dispatch(resetSearchText())
             }}
             onClose={() => {
-              dispatch(resetSearchText())
+              dispatch(resetFilters())
               setSearchMode(false)
             }}
           />

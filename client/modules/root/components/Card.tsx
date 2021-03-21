@@ -4,6 +4,7 @@ import { faintGray } from '~/client/colors'
 
 const Card: FC<Props> = ({ title, imageUrl }) => {
   const [aspectRatio, setAspectRatio] = useState(2.5)
+
   const [width, setWidth] = useState(0)
 
   const [loading, setLoading] = useState(true)

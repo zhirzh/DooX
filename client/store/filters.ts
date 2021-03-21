@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { useSelector } from 'react-redux'
 import { DoodleType } from '~types/NormalizedDoodle'
+import { StoreState } from '.'
 
 export interface Filters {
   searchText: string
@@ -39,8 +41,22 @@ const { reducer, actions } = createSlice({
       state.countries = countries
     },
 
+    removeCountry: (state, { payload: country }: PayloadAction<string>) => {
+      if (state.countries.includes(country)) {
+        const i = state.countries.indexOf(country)
+        state.countries.splice(i, 1)
+      }
+    },
+
     setTags: (state, { payload: tags }: PayloadAction<string[]>) => {
       state.tags = tags
+    },
+
+    removeTag: (state, { payload: tag }: PayloadAction<string>) => {
+      if (state.countries.includes(tag)) {
+        const i = state.countries.indexOf(tag)
+        state.countries.splice(i, 1)
+      }
     },
 
     setStartDate: (state, { payload: date }: PayloadAction<string>) => {
@@ -57,6 +73,10 @@ const { reducer, actions } = createSlice({
 
 export { reducer as filters }
 
+const filtersSelector = (state: StoreState) => state.filters
+
+export const useFilters = () => useSelector(filtersSelector)
+
 export const {
   setSearchText,
   resetSearchText,
@@ -64,8 +84,10 @@ export const {
   setDoodleType,
 
   setCountries,
+  removeCountry,
 
   setTags,
+  removeTag,
 
   setStartDate,
   setEndDate,

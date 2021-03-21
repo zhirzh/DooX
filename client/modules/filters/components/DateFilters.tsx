@@ -1,20 +1,19 @@
 import { max, min, startOfToday } from 'date-fns'
 import React, { FC, useEffect } from 'react'
 import { View } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
-import { StoreState } from '~client/store'
-import { setEndDate, setStartDate } from '~client/store/filters'
+import { useDispatch } from 'react-redux'
+import { setEndDate, setStartDate, useFilters } from '~client/store/filters'
 import { firstDoodleDate } from '~shared/constants'
 import { parseDateString, stringifyDate } from '~shared/utils/date'
 import DatePicker from './DatePicker'
 
 const DateFilters: FC<Props> = ({}) => {
-  const minDate = firstDoodleDate
-  const maxDate = startOfToday()
-
-  const filters = useSelector((state: StoreState) => state.filters)
+  const filters = useFilters()
 
   const dispatch = useDispatch()
+
+  const minDate = firstDoodleDate
+  const maxDate = startOfToday()
 
   const startDate = filters.startDate ? parseDateString(filters.startDate) : minDate
   const endDate = filters.endDate ? parseDateString(filters.endDate) : maxDate

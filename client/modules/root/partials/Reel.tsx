@@ -1,11 +1,10 @@
 import { NetworkStatus } from '@apollo/client'
 import React, { FC, useEffect, useState } from 'react'
 import { ActivityIndicator, FlatList, Platform, RefreshControl } from 'react-native'
-import { useSelector } from 'react-redux'
 import { black } from '~client/colors'
 import Separator from '~client/components/Separator'
 import Space from '~client/components/Space'
-import { StoreState } from '~client/store'
+import { useFilters } from '~client/store/filters'
 import { useDoodlesQuery } from '~types/graphql'
 import Card from '../components/Card'
 import HistoryReel from './HistoryReel'
@@ -13,7 +12,7 @@ import HistoryReel from './HistoryReel'
 const Reel: FC<Props> = ({}) => {
   const [separatorVisible, setSeparatorVisible] = useState(false)
 
-  const filters = useSelector((state: StoreState) => state.filters)
+  const filters = useFilters()
 
   const { loading, data, networkStatus, fetchMore, refetch } = useDoodlesQuery({
     notifyOnNetworkStatusChange: true,
