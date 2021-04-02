@@ -1,9 +1,9 @@
 import React, { FC, useState } from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
-import { faintGray } from '../../../colors'
+import { faintGray } from '~client/colors'
 
-const size = 64
-const captionSpace = 24
+const size = 68
+const captionSpace = 20
 
 const Circle: FC<Props> = ({ caption, imageUrl }) => {
   const [loading, setLoading] = useState(true)
@@ -45,7 +45,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   caption: {
-    padding: 8,
+    paddingHorizontal: 4,
+    paddingVertical: 8,
     fontSize: 12,
   },
   image: {

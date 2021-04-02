@@ -1,7 +1,7 @@
 import { Feather } from '@expo/vector-icons'
 import React, { FC } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { blue, darkGray, lightGray, white } from '../../../colors'
+import { blue, darkGray, lightGray, white } from '~client/colors'
 
 const Chip: FC<Props> = ({ label, selected, closeable, action, onPress }) => {
   return (

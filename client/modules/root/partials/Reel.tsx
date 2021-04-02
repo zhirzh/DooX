@@ -1,6 +1,5 @@
-import { NetworkStatus } from '@apollo/client'
-import React, { FC, useEffect, useState } from 'react'
-import { ActivityIndicator, FlatList, Platform, RefreshControl } from 'react-native'
+import React, { FC, useEffect, useRef, useState } from 'react'
+import { ActivityIndicator, Animated, Platform, RefreshControl, StyleSheet } from 'react-native'
 import { black } from '~client/colors'
 import Separator from '~client/components/Separator'
 import Space from '~client/components/Space'
@@ -9,43 +8,53 @@ import { useDoodlesQuery } from '~types/graphql'
 import Card from '../components/Card'
 import HistoryReel from './HistoryReel'
 
-const Reel: FC<Props> = ({}) => {
-  const [separatorVisible, setSeparatorVisible] = useState(false)
-
+const Reel: FC = () => {
   const filters = useFilters()
 
-  const { loading, data, networkStatus, fetchMore, refetch } = useDoodlesQuery({
+  const { data, loading, fetchMore, refetch } = useDoodlesQuery({
     notifyOnNetworkStatusChange: true,
-    variables: {
-      offset: 0,
-      searchText: filters.searchText,
-      type: filters.doodleType,
-      countries: filters.countries,
-      tags: filters.tags,
-      startDate: filters.startDate,
-      endDate: filters.endDate,
-    },
+    variables: { offset: 0, ...filters },
   })
 
   useEffect(() => {
-    if (loading) {
-      return
-    }
-
     refetch()
   }, [filters])
 
-  const refetching = networkStatus === NetworkStatus.refetch
+  const doodles = data?.doodles
+
+  const [refreshing, setRefreshing] = useState(false)
+  const [fetchingMore, setFetchingMore] = useState(false)
+
+  useEffect(() => {
+    if (refreshing) {
+      setRefreshing(false)
+    }
+
+    if (fetchingMore) {
+      setFetchingMore(false)
+    }
+  }, [loading])
+
+  const scrollY = useRef(new Animated.Value(0)).current
 
   return (
     <>
-      {separatorVisible && <Separator />}
+      <Animated.View
+        style={{
+          opacity: scrollY.interpolate({
+            inputRange: [0, 5],
+            outputRange: [0, 1],
+            extrapolate: 'clamp',
+          }),
+        }}
+      >
+        <Separator />
+      </Animated.View>
 
-      <FlatList
-        contentContainerStyle={{ paddingBottom: 100 }}
-        data={data?.doodles}
+      <Animated.FlatList
+        data={doodles}
         keyExtractor={doodle => doodle.id}
-        renderItem={({ item: doodle }) => <Card title={doodle.title} imageUrl={doodle.url} />}
+        contentContainerStyle={styles.list}
         ItemSeparatorComponent={() => (
           <>
             <Space height={20} />
@@ -59,45 +68,59 @@ const Reel: FC<Props> = ({}) => {
           </>
         }
         ListFooterComponent={
-          loading ? (
-            <ActivityIndicator
-              size={Platform.select({ android: 'large' })}
-              color={black}
-              style={{ marginVertical: 16 }}
-            />
-          ) : null
+          <ActivityIndicator
+            animating={fetchingMore}
+            color={black}
+            size={Platform.select({ android: 'large' })}
+            style={{ marginTop: 12, marginBottom: 20 }}
+          />
+        }
+        ListEmptyComponent={
+          <ActivityIndicator
+            size={Platform.select({ android: 'large' })}
+            color={black}
+            style={{ flexGrow: 1 }}
+          />
         }
         refreshControl={
           <RefreshControl
-            refreshing={refetching}
+            refreshing={refreshing}
             onRefresh={() => {
-              if (loading) {
-                return
-              }
+              setRefreshing(true)
 
               refetch()
             }}
           />
         }
-        onScroll={e => {
-          setSeparatorVisible(e.nativeEvent.contentOffset.y > 1)
-        }}
-        onEndReached={() => {
-          if (loading) {
-            return
+        onScroll={Animated.event(
+          [
+            {
+              nativeEvent: { contentOffset: { y: scrollY } },
+            },
+          ],
+          {
+            useNativeDriver: true,
           }
+        )}
+        onEndReached={() => {
+          setFetchingMore(true)
 
           fetchMore({
-            variables: {
-              offset: data!.doodles.length,
-            },
+            variables: { offset: doodles?.length },
           })
         }}
+        renderItem={({ item: doodle }) => <Card title={doodle.title} imageUrl={doodle.url} />}
       />
     </>
   )
 }
 
-interface Props {}
+const idExtractor = (x: any) => x.id
+
+const styles = StyleSheet.create({
+  list: {
+    flexGrow: 1,
+  },
+})
 
 export default Reel

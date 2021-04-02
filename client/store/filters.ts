@@ -5,7 +5,7 @@ import { StoreState } from '.'
 
 export interface Filters {
   searchText: string
-  doodleType: DoodleType | null
+  type: DoodleType | null
   countries: string[]
   tags: string[]
   startDate: string | null // YYYY-MM-DD
@@ -14,7 +14,7 @@ export interface Filters {
 
 const initialState: Filters = {
   searchText: '',
-  doodleType: null,
+  type: null,
   countries: [],
   tags: [],
   startDate: null,
@@ -34,7 +34,7 @@ const { reducer, actions } = createSlice({
     },
 
     setDoodleType: (state, { payload: doodleType }: PayloadAction<DoodleType | null>) => {
-      state.doodleType = doodleType
+      state.type = doodleType
     },
 
     setCountries: (state, { payload: countries }: PayloadAction<string[]>) => {
@@ -63,8 +63,16 @@ const { reducer, actions } = createSlice({
       state.startDate = date
     },
 
+    resetStartDate: state => {
+      state.startDate = initialState.startDate
+    },
+
     setEndDate: (state, { payload: date }: PayloadAction<string>) => {
       state.endDate = date
+    },
+
+    resetEndDate: state => {
+      state.endDate = initialState.endDate
     },
 
     resetFilters: () => initialState,
@@ -90,7 +98,10 @@ export const {
   removeTag,
 
   setStartDate,
+  resetStartDate,
+
   setEndDate,
+  resetEndDate,
 
   resetFilters,
 } = actions

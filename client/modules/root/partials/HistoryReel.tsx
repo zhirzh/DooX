@@ -27,7 +27,8 @@ const HistoryReel: FC = () => {
 
 const styles = StyleSheet.create({
   reel: {
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingTop: 12,
     paddingBottom: 4,
   },
 })
