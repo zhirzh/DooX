@@ -397,6 +397,7 @@ export type IResolvers<ContextType = any> = Resolvers<ContextType>
 export type DoodlesQueryVariables = Exact<{
   offset: Maybe<Scalars['Int']>
   searchText: Maybe<Scalars['String']>
+  order: Maybe<QueryOrder>
   type: Maybe<Scalars['String']>
   countries: Maybe<Array<Scalars['String']> | Scalars['String']>
   tags: Maybe<Array<Scalars['String']> | Scalars['String']>
@@ -421,6 +422,7 @@ export const DoodlesDocument = gql`
   query doodles(
     $offset: Int
     $searchText: String
+    $order: QueryOrder
     $type: String
     $countries: [String!]
     $tags: [String!]
@@ -430,6 +432,7 @@ export const DoodlesDocument = gql`
     doodles(
       limit: 4
       offset: $offset
+      order: $order
       searchText: $searchText
       type: $type
       countries: $countries
@@ -458,6 +461,7 @@ export const DoodlesDocument = gql`
  *   variables: {
  *      offset: // value for 'offset'
  *      searchText: // value for 'searchText'
+ *      order: // value for 'order'
  *      type: // value for 'type'
  *      countries: // value for 'countries'
  *      tags: // value for 'tags'

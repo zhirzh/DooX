@@ -2,29 +2,19 @@ import DateTimePicker from '@react-native-community/datetimepicker'
 import { format } from 'date-fns/esm'
 import React, { FC, useState } from 'react'
 import { Modal, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { blue, darkGray, white } from '~client/colors'
+import { black, blue, darkGray, shadowOpacity, white } from '~client/colors'
 import Space from '~client/components/Space'
 
 const DatePicker: FC<Props> = ({ label, value, minDate, maxDate, onSelect }) => {
   const [visible, setVisible] = useState(false)
 
-  const renderDatePicker = () => (
-    <DateTimePicker
-      mode="date"
-      value={value}
-      minimumDate={minDate}
-      maximumDate={maxDate}
-      display={Platform.select({ ios: 'spinner' })}
-      style={{ backgroundColor: white }}
-      onChange={(_, date) => {
-        setVisible(false)
-        onSelect(date)
-      }}
-    />
-  )
+  const onChange = (date?: Date) => {
+    setVisible(false)
+    onSelect(date)
+  }
 
   return (
-    <View>
+    <>
       <TouchableOpacity
         onPress={() => {
           setVisible(true)
@@ -32,25 +22,49 @@ const DatePicker: FC<Props> = ({ label, value, minDate, maxDate, onSelect }) => 
       >
         <View style={styles.date}>
           <Text style={[styles.label, { color: darkGray }]}>{label}</Text>
+
           <Space width={8} />
+
           <Text style={{ color: blue, fontSize: 16 }}>{format(value, 'MMM do, yyyy')}</Text>
         </View>
       </TouchableOpacity>
 
-      {Platform.OS !== 'ios' && visible && renderDatePicker()}
+      {Platform.OS !== 'ios' && visible && (
+        <DateTimePicker
+          mode="date"
+          value={value}
+          minimumDate={minDate}
+          maximumDate={maxDate}
+          onChange={(_, date) => {
+            onChange(date)
+          }}
+        />
+      )}
 
       {Platform.OS === 'ios' && (
-        <Modal
-          transparent
-          visible={visible}
-          onRequestClose={() => {
-            setVisible(false)
-          }}
-        >
-          {renderDatePicker()}
+        <Modal transparent animationType="fade" visible={visible}>
+          <TouchableOpacity
+            style={[StyleSheet.absoluteFill, { backgroundColor: black, opacity: shadowOpacity }]}
+            onPress={() => {
+              setVisible(false)
+            }}
+          />
+
+          <View style={[styles.ios, { backgroundColor: white }]}>
+            <DateTimePicker
+              mode="date"
+              display="inline"
+              value={value}
+              minimumDate={minDate}
+              maximumDate={maxDate}
+              onChange={(_, date) => {
+                onChange(date)
+              }}
+            />
+          </View>
         </Modal>
       )}
-    </View>
+    </>
   )
 }
 
@@ -72,6 +86,14 @@ const styles = StyleSheet.create({
     marginTop: 2,
     fontWeight: 'bold',
     fontSize: 12,
+  },
+  ios: {
+    marginTop: 'auto',
+    marginBottom: 'auto',
+    marginHorizontal: 20,
+    padding: 8,
+    borderRadius: 20,
+    overflow: 'hidden',
   },
 })
 

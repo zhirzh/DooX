@@ -1,4 +1,4 @@
-import { Feather } from '@expo/vector-icons'
+import { MaterialIcons } from '@expo/vector-icons'
 import React, { createRef, FC } from 'react'
 import { Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { black, blue, faintGray, white } from '~/client/colors'
@@ -25,7 +25,7 @@ const SearchBar: FC<Props> = ({ placeholder, action, value, onChange, onClear, o
               onClear()
             }}
           >
-            <Feather name="x" size={16} color={black} style={styles.actionWrapper} />
+            <MaterialIcons name="close" size={16} color={black} style={styles.actionWrapper} />
           </TouchableOpacity>
         )}
       </View>

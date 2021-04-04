@@ -4,6 +4,7 @@ import {
   StackNavigationOptions,
 } from '@react-navigation/stack'
 import React, { FC } from 'react'
+import { black, shadowOpacity } from '~client/colors'
 import CountriesSearch from '~client/modules/filters/modals/CountriesSearch'
 import Filters from '~client/modules/filters/modals/Filters'
 import TagsSearch from '~client/modules/filters/modals/TagsSearch'
@@ -34,9 +35,10 @@ const screenOptions: StackNavigationOptions = {
     const interpolationStyles = CardStyleInterpolators.forVerticalIOS(props)
 
     interpolationStyles.overlayStyle = {
+      backgroundColor: black,
       opacity: props.current.progress.interpolate({
         inputRange: [0, 1],
-        outputRange: [0, 0.5],
+        outputRange: [0, shadowOpacity],
       }),
     }
 

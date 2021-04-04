@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { useSelector } from 'react-redux'
+import { QueryOrder } from '~types/graphql'
 import { DoodleType } from '~types/NormalizedDoodle'
 import { StoreState } from '.'
 
@@ -10,6 +11,7 @@ export interface Filters {
   tags: string[]
   startDate: string | null // YYYY-MM-DD
   endDate: string | null // YYYY-MM-DD
+  order: QueryOrder
 }
 
 const initialState: Filters = {
@@ -19,6 +21,7 @@ const initialState: Filters = {
   tags: [],
   startDate: null,
   endDate: null,
+  order: QueryOrder.Latest,
 }
 
 const { reducer, actions } = createSlice({
@@ -75,6 +78,10 @@ const { reducer, actions } = createSlice({
       state.endDate = initialState.endDate
     },
 
+    setOrder: (state, { payload: order }: PayloadAction<QueryOrder>) => {
+      state.order = order
+    },
+
     resetFilters: () => initialState,
   },
 })
@@ -102,6 +109,8 @@ export const {
 
   setEndDate,
   resetEndDate,
+
+  setOrder,
 
   resetFilters,
 } = actions

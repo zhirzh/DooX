@@ -1,4 +1,4 @@
-import { StackScreenProps } from '@react-navigation/stack'
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/core'
 import { without } from 'lodash'
 import React, { FC, useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -6,10 +6,10 @@ import { Routes } from '~client/navigation/Routes'
 import Search from '~client/partials/Search'
 import { setTags, useFilters } from '~client/store/filters'
 
-const TagsSearch: FC<Props> = ({ navigation, route }) => {
-  const { tags } = route.params
+const TagsSearch: FC = () => {
+  const { tags } = useRoute<RouteProp<Routes, 'TagsSearch'>>().params
 
-  const { goBack } = navigation
+  const { goBack } = useNavigation()
 
   const filters = useFilters()
 
@@ -35,10 +35,8 @@ const TagsSearch: FC<Props> = ({ navigation, route }) => {
   )
 }
 
-export interface TagsSearchNavigationProps {
+export interface TagsSearchRouteProps {
   tags: string[]
 }
-
-interface Props extends StackScreenProps<Routes, 'TagsSearch'> {}
 
 export default TagsSearch

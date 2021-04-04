@@ -13,7 +13,7 @@ import { firstDoodleDate } from '~shared/constants'
 import { parseDateString, stringifyDate } from '~shared/utils/date'
 import DatePicker from './DatePicker'
 
-const DateFilters: FC<Props> = ({}) => {
+const DateFilters: FC = () => {
   const filters = useFilters()
 
   const dispatch = useDispatch()
@@ -64,7 +64,5 @@ const DateFilters: FC<Props> = ({}) => {
     </View>
   )
 }
-
-interface Props {}
 
 export default DateFilters

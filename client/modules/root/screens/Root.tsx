@@ -1,4 +1,4 @@
-import { Feather } from '@expo/vector-icons'
+import { MaterialIcons } from '@expo/vector-icons'
 import React, { FC, useEffect, useRef, useState } from 'react'
 import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -30,7 +30,7 @@ const Root: FC = () => {
               setSearchMode(true)
             }}
           >
-            <Feather name="search" size={20} color={black} />
+            <MaterialIcons name="search" size={20} color={black} />
           </TouchableOpacity>
         </View>
 

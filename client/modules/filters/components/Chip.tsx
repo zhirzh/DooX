@@ -1,4 +1,4 @@
-import { Feather } from '@expo/vector-icons'
+import { MaterialIcons } from '@expo/vector-icons'
 import React, { FC } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { blue, darkGray, lightGray, white } from '~client/colors'
@@ -19,7 +19,7 @@ const Chip: FC<Props> = ({ label, selected, closeable, action, onPress }) => {
           },
         ]}
       >
-        {action && <Feather name="plus" color={blue} size={12} style={styles.plus} />}
+        {action && <MaterialIcons name="add" color={blue} size={12} style={styles.plus} />}
 
         <Text
           style={[
@@ -34,7 +34,9 @@ const Chip: FC<Props> = ({ label, selected, closeable, action, onPress }) => {
           {label}
         </Text>
 
-        {closeable && <Feather name="x" color={darkGray} size={12} style={styles.close} />}
+        {closeable && (
+          <MaterialIcons name="close" color={darkGray} size={12} style={styles.close} />
+        )}
       </View>
     </TouchableOpacity>
   )
@@ -58,7 +60,7 @@ const styles = StyleSheet.create({
   },
   label: {
     paddingVertical: 4,
-    fontSize: 12,
+    fontSize: 14,
     textAlign: 'center',
   },
   close: {

@@ -12,3 +12,5 @@ export const faintGray = '#eee'
 export const grayTransparent = '#000a'
 
 export const blue = '#18f'
+
+export const shadowOpacity = 0.5

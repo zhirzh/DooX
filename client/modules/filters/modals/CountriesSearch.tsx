@@ -1,4 +1,4 @@
-import { StackScreenProps } from '@react-navigation/stack'
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/core'
 import { without } from 'lodash'
 import React, { FC, useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -6,10 +6,10 @@ import { Routes } from '~client/navigation/Routes'
 import Search from '~client/partials/Search'
 import { setCountries, useFilters } from '~client/store/filters'
 
-const CountriesSearch: FC<Props> = ({ navigation, route }) => {
-  const { countries } = route.params
+const CountriesSearch: FC = () => {
+  const { countries } = useRoute<RouteProp<Routes, 'CountriesSearch'>>().params
 
-  const { goBack } = navigation
+  const { goBack } = useNavigation()
 
   const filters = useFilters()
 
@@ -37,10 +37,8 @@ const CountriesSearch: FC<Props> = ({ navigation, route }) => {
   )
 }
 
-export interface CountriesSearchNavigationProps {
+export interface CountriesSearchRouteProps {
   countries: string[]
 }
-
-interface Props extends StackScreenProps<Routes, 'CountriesSearch'> {}
 
 export default CountriesSearch

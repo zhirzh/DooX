@@ -1,10 +1,10 @@
-import { CountriesSearchNavigationProps } from '~client/modules/filters/modals/CountriesSearch'
-import { TagsSearchNavigationProps } from '~client/modules/filters/modals/TagsSearch'
+import { CountriesSearchRouteProps } from '~client/modules/filters/modals/CountriesSearch'
+import { TagsSearchRouteProps } from '~client/modules/filters/modals/TagsSearch'
 
 export type Routes = {
   Root: undefined
   Main: undefined
   Filters: undefined
-  CountriesSearch: CountriesSearchNavigationProps
-  TagsSearch: TagsSearchNavigationProps
+  CountriesSearch: CountriesSearchRouteProps
+  TagsSearch: TagsSearchRouteProps
 }

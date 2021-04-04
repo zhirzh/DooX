@@ -1,6 +1,7 @@
 query doodles(
   $offset: Int
   $searchText: String
+  $order: QueryOrder
   $type: String
   $countries: [String!]
   $tags: [String!]
@@ -10,6 +11,7 @@ query doodles(
   doodles(
     limit: 4
     offset: $offset
+    order: $order
 
     searchText: $searchText
 

@@ -1,12 +1,13 @@
-import { Feather, MaterialIcons } from '@expo/vector-icons'
+import { MaterialIcons } from '@expo/vector-icons'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
 import React, { FC, useEffect, useRef, useState } from 'react'
-import { Animated, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Animated, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useDispatch } from 'react-redux'
 import { blue, white } from '~client/colors'
 import SearchBar from '~client/components/SearchBar'
 import Separator from '~client/components/Separator'
+import Space from '~client/components/Space'
 import { Routes } from '~client/navigation/Routes'
 import { resetFilters, resetSearchText, setSearchText, useFilters } from '~client/store/filters'
 
@@ -40,20 +41,19 @@ const Root: FC<Props> = ({ searchMode, onClose }) => {
         onLayout={({ nativeEvent }) => {
           setSearchHeight(nativeEvent.layout.height)
         }}
-        style={{
-          position: 'absolute',
-          width: '100%',
-          bottom: '100%',
-
-          transform: [
-            {
-              translateY: animatedValue.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, searchHeight],
-              }),
-            },
-          ],
-        }}
+        style={[
+          styles.search,
+          {
+            transform: [
+              {
+                translateY: animatedValue.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0, searchHeight],
+                }),
+              },
+            ],
+          },
+        ]}
       >
         <SearchBar
           placeholder="Search doodles"
@@ -76,47 +76,33 @@ const Root: FC<Props> = ({ searchMode, onClose }) => {
         onLayout={({ nativeEvent }) => {
           setFooterHeight(nativeEvent.layout.height)
         }}
-        style={{
-          position: 'absolute',
-          width: '100%',
-          top: '100%',
-
-          backgroundColor: white,
-          transform: [
-            {
-              translateY: animatedValue.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, -1 * footerHeight],
-              }),
-            },
-          ],
-        }}
+        style={[
+          styles.footer,
+          {
+            backgroundColor: white,
+            transform: [
+              {
+                translateY: animatedValue.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0, -1 * footerHeight],
+                }),
+              },
+            ],
+          },
+        ]}
       >
         <Separator />
 
-        <View style={styles.footer}>
-          <TouchableOpacity
-            style={styles.footerAction}
-            onPress={() => {
-              alert()
-            }}
-          >
-            <MaterialIcons name="sort" size={24} color={blue} />
-            <Text style={{ color: blue, fontSize: 14 }}>Sort</Text>
-          </TouchableOpacity>
-
-          <Separator vertical />
-
-          <TouchableOpacity
-            style={styles.footerAction}
-            onPress={() => {
-              navigate('Filters')
-            }}
-          >
-            <Feather name="filter" size={20} color={blue} />
-            <Text style={{ color: blue, fontSize: 14 }}>Filter</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={styles.footerAction}
+          onPress={() => {
+            navigate('Filters')
+          }}
+        >
+          <MaterialIcons name="tune" size={24} color={blue} />
+          <Space width={4} />
+          <Text style={{ color: blue, fontSize: 16 }}>Filter</Text>
+        </TouchableOpacity>
       </Animated.View>
     </SafeAreaView>
   )
@@ -128,14 +114,21 @@ interface Props {
 }
 
 const styles = StyleSheet.create({
+  search: {
+    position: 'absolute',
+    width: '100%',
+    bottom: '100%',
+  },
   footer: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    paddingTop: 4,
-    paddingBottom: 8,
+    position: 'absolute',
+    width: '100%',
+    top: '100%',
   },
   footerAction: {
     flexGrow: 1,
+    paddingVertical: 8,
+    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
   },
 })

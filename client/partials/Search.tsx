@@ -1,4 +1,4 @@
-import { Feather } from '@expo/vector-icons'
+import { MaterialIcons } from '@expo/vector-icons'
 import { identity, isEmpty } from 'lodash'
 import React, { FC, useState } from 'react'
 import { FlatList, Text, TouchableOpacity, View } from 'react-native'
@@ -69,7 +69,7 @@ const Search: FC<Props> = ({ placeholder, options, selected, onClose, onSelect }
                 </Text>
 
                 {isSelected && (
-                  <Feather name={query === '' ? 'x' : 'check'} size={16} color={black} />
+                  <MaterialIcons name={query === '' ? 'close' : 'check'} size={16} color={black} />
                 )}
               </View>
             </TouchableOpacity>
